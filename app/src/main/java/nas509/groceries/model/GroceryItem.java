@@ -6,15 +6,15 @@ import java.math.BigDecimal;
  * Created by jason on 9/16/2017.
  */
 
-public class Item {
+public class GroceryItem {
     private String name;
     private BigDecimal price;
 
-    public Item() {
+    public GroceryItem() {
         this("No name", BigDecimal.ZERO);
     }
 
-    public Item(String name, BigDecimal price) {
+    public GroceryItem(String name, BigDecimal price) {
         this.name = name;
         this.price = price;
     }
