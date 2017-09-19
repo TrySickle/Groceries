@@ -54,7 +54,7 @@ public class DisplayActivity extends AppCompatActivity {
         });
 
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = findViewById(R.id.course_list);
+        View recyclerView = findViewById(R.id.recycler_list);
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
@@ -66,7 +66,7 @@ public class DisplayActivity extends AppCompatActivity {
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         Model model = Model.getInstance();
-        recyclerView.setAdapter(new SimpleCourseRecyclerViewAdapter(model.getCourses()));
+        recyclerView.setAdapter(new GroceryItemRecyclerViewAdapter(model.getGroceryItems()));
     }
 
     /**
@@ -75,20 +75,20 @@ public class DisplayActivity extends AppCompatActivity {
      *
      * In this case, we are just mapping the toString of the Course object to a text field.
      */
-    public class SimpleCourseRecyclerViewAdapter
-            extends RecyclerView.Adapter<SimpleCourseRecyclerViewAdapter.ViewHolder> {
+    public class GroceryItemRecyclerViewAdapter
+            extends RecyclerView.Adapter<GroceryItemRecyclerViewAdapter.ViewHolder> {
 
         /**
          * Collection of the items to be shown in this list.
          */
-        private final List<GroceryItem> mCourses;
+        private final List<GroceryItem> mGroceryItems;
 
         /**
          * set the items to be used by the adapter
          * @param items the list of items to be displayed in the recycler view
          */
-        public SimpleCourseRecyclerViewAdapter(List<GroceryItem> items) {
-            mCourses = items;
+        public GroceryItemRecyclerViewAdapter(List<GroceryItem> items) {
+            mGroceryItems = items;
         }
 
         @Override
@@ -100,7 +100,7 @@ public class DisplayActivity extends AppCompatActivity {
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.course_list_content, parent, false);
+                    .inflate(R.layout.list_content, parent, false);
             return new ViewHolder(view);
         }
 
@@ -113,13 +113,12 @@ public class DisplayActivity extends AppCompatActivity {
             to an element in the view (which is one of our two TextView widgets
              */
             //start by getting the element at the correct position
-            holder.mCourse = mCourses.get(position);
             /*
               Now we bind the data to the widgets.  In this case, pretty simple, put the id in one
               textview and the string rep of a course in the other.
              */
-            holder.mIdView.setText("" + mCourses.get(position).getId());
-            holder.mContentView.setText(mCourses.get(position).toString());
+            holder.mNameView.setText(mGroceryItems.get(position).getName());
+            holder.mPriceView.setText(mGroceryItems.get(position).getPriceString());
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
@@ -147,7 +146,7 @@ public class DisplayActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mCourses.size();
+            return mGroceryItems.size();
         }
 
         /**
@@ -158,20 +157,20 @@ public class DisplayActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final TextView mIdView;
-            public final TextView mContentView;
-            public GroceryItem mCourse;
+            public final TextView mNameView;
+            public final TextView mPriceView;
+            public GroceryItem mGroceryItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                mNameView = (TextView) view.findViewById(R.id.name);
+                mPriceView = (TextView) view.findViewById(R.id.price);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString() + " '" + mPriceView.getText() + "'";
             }
         }
     }
