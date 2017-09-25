@@ -1,7 +1,5 @@
 package nas509.groceries.model;
 
-import android.support.compat.BuildConfig;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

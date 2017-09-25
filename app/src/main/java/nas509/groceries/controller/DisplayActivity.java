@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,23 +65,31 @@ public class DisplayActivity extends AppCompatActivity {
         builder.setTitle("Add New Item");
 
         LayoutInflater inflater = this.getLayoutInflater();
-        builder.setView(inflater.inflate(R.layout.dialog_add_item, null));
+        View viewInflated = inflater.inflate(R.layout.dialog_add_item, null);
+        final EditText name = (EditText) viewInflated.findViewById(R.id.name);
+        final EditText price = (EditText) viewInflated.findViewById(R.id.price);
+        builder.setView(viewInflated);
 
         // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-
+            public void onClick(DialogInterface dialog, int id) {
+                addGroceryItem(name.getText(), price.getText());
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int id) {
                 dialog.cancel();
             }
         });
 
         builder.show();
+    }
+
+    private void addGroceryItem(Editable name, Editable price) {
+        Model model = Model.getInstance();
+        model.addGroceryItem(new GroceryItem(name.toString(), price.toString()));
     }
 
     /**
