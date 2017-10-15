@@ -142,7 +142,7 @@ public class DisplayActivity extends AppCompatActivity {
                     model.editGroceryItem(groceryId, name.getText().toString(), price.getText().toString());
                     //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
                     //model.saveText(file);
-                    adapter.notifyDataSetChanged();
+                    //adapter.notifyDataSetChanged();
                 } else {
                     dialog.cancel();
                 }
@@ -157,7 +157,7 @@ public class DisplayActivity extends AppCompatActivity {
                         if (index >= 0) {
                             //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
                             //model.saveText(file);
-                            adapter.notifyItemRemoved(index);
+                            //adapter.notifyItemRemoved(index);
                         }
                     }
                 });
