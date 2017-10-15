@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -65,12 +66,19 @@ public class DisplayActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         model.retrieveData();
-        adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
-        //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        recyclerView = findViewById(R.id.recycler_list);
-        assert recyclerView != null;
-        //Step 2.  Hook up the adapter to the view
-        setupRecyclerView((RecyclerView) recyclerView);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
+                //Step 1.  Setup the recycler view by getting it from our layout in the main window
+                recyclerView = findViewById(R.id.recycler_list);
+                assert recyclerView != null;
+                //Step 2.  Hook up the adapter to the view
+                setupRecyclerView((RecyclerView) recyclerView);
+            }
+        }, 500);
     }
 
     /**

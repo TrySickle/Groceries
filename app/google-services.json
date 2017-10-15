@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "149260510536-ft2b18vnrj0etttu7te1mgcpv91od7mu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "nas509.groceries",
+            "certificate_hash": "41ebb2d877c3e201d824fd54d1cd120d70572bd3"
+          }
+        },
+        {
           "client_id": "149260510536-ce99eht64g9abpj5f1coshv869lcbset.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

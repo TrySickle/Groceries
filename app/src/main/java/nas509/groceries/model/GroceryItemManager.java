@@ -69,6 +69,7 @@ public class GroceryItemManager {
 
                 _groceryItems.clear();
 
+                int highestId = 0;
                 for (DataSnapshot grocerySnapshot : dataSnapshot.getChildren()) {
                     //GroceryItem grocery = grocerySnapshot.getValue(GroceryItem.class);
                     String name = (String) (grocerySnapshot.child("name").getValue());
@@ -76,8 +77,12 @@ public class GroceryItemManager {
                     BigDecimal money = new BigDecimal(value.replaceAll(",", ""));
                     long l = (long) grocerySnapshot.child("id").getValue();
                     int id = (int) l;
+                    if (id > highestId) {
+                        highestId = id;
+                    }
                     _groceryItems.add(new GroceryItem(name, money, id));
                 }
+                idSeed = highestId + 1;
             }
 
             @Override
