@@ -51,11 +51,11 @@ public class Model {
      * @return true if added, false if a duplicate
      */
     public boolean addGroceryItem(GroceryItem groceryItem) {
-        for (GroceryItem c : groceryItemManager.getGroceryItems()) {
-            if (c.equals(groceryItem)) return false;
-        }
-        groceryItemManager.getGroceryItems().add(groceryItem);
-        return true;
+        return groceryItemManager.addGroceryItem(groceryItem);
+    }
+
+    public boolean editGroceryItem(int id, String name, String price) {
+        return groceryItemManager.editGroceryItem(id, name, price);
     }
 
     // TODO: separate model into itemManager and itemManagementFacade

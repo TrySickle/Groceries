@@ -27,6 +27,9 @@ import nas509.groceries.model.Model;
 
 public class DisplayActivity extends AppCompatActivity {
 
+    Model model;
+    GroceryItemRecyclerViewAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,8 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
+        model = Model.getInstance();
+        adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         View recyclerView = findViewById(R.id.recycler_list);
         assert recyclerView != null;
@@ -56,8 +61,36 @@ public class DisplayActivity extends AppCompatActivity {
      * @param recyclerView  the view that needs this adapter
      */
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        Model model = Model.getInstance();
-        recyclerView.setAdapter(new GroceryItemRecyclerViewAdapter(model.getGroceryItems()));
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void editGroceryItemDialog(final int groceryId) {
+        GroceryItem groceryItem = model.getGroceryItemById(groceryId);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Edit Item");
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View viewInflated = inflater.inflate(R.layout.dialog_add_item, null);
+        final EditText name = (EditText) viewInflated.findViewById(R.id.name);
+        final EditText price = (EditText) viewInflated.findViewById(R.id.price);
+        builder.setView(viewInflated);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                model.editGroceryItem(groceryId, name.getText().toString(), price.getText().toString());
+                adapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     private void addGroceryItemDialog() {
@@ -74,7 +107,7 @@ public class DisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                addGroceryItem(name.getText(), price.getText());
+                model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString()));
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -85,11 +118,6 @@ public class DisplayActivity extends AppCompatActivity {
         });
 
         builder.show();
-    }
-
-    private void addGroceryItem(Editable name, Editable price) {
-        Model model = Model.getInstance();
-        model.addGroceryItem(new GroceryItem(name.toString(), price.toString()));
     }
 
     /**
@@ -150,20 +178,7 @@ public class DisplayActivity extends AppCompatActivity {
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                        //on a phone, we need to change windows to the detail view
-                        Context context = v.getContext();
-                        //create our new intent with the new screen (activity)
-                        Intent intent = new Intent(context, EditGroceryItemActivity.class);
-                        /*
-                            pass along the id of the course so we can retrieve the correct data in
-                            the next window
-                         */
-                        intent.putExtra(EditGroceryItemActivity.ARG_GROCERY_ID, holder.mGroceryItem.getId());
-
-//                      model.setCurrentCourse(holder.mCourse);
-
-                        //now just display the new window
-                        context.startActivity(intent);
+                        editGroceryItemDialog(holder.mGroceryItem.getId());
                 }
             });
         }

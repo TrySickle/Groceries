@@ -8,8 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 
 /**
@@ -76,11 +78,27 @@ public class GroceryItemManager {
      * @return true if added, false if a duplicate
      */
     public boolean addGroceryItem(GroceryItem groceryItem) {
-        for (GroceryItem c : _groceryItems ) {
-            if (c.equals(groceryItem)) return false;
+        for (GroceryItem g : _groceryItems ) {
+            if (g.equals(groceryItem)) return false;
         }
         _groceryItems.add(groceryItem);
         return true;
+    }
+
+    public boolean editGroceryItem(int id, String name, String price) {
+        int index = 0;
+        while (index < _groceryItems.size() && _groceryItems.get(index).getId() != id) {
+            Log.d("edit", _groceryItems.get(index).getName());
+            index++;
+        }
+        if (_groceryItems.get(index).getId() == id) {
+            _groceryItems.set(index, new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id));
+            for (GroceryItem g : _groceryItems) {
+                Log.d("all", g.getName());
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -90,21 +108,6 @@ public class GroceryItemManager {
     public GroceryItem getCurrentGroceryItem() { return _currentGroceryItem;}
 
     public void setCurrentGroceryItem(GroceryItem groceryItem) { _currentGroceryItem = groceryItem; }
-
-    /**
-     * Return a course that has matching number.
-     * This uses an O(n) linear search.
-     *
-     * @param number the number of the course to find
-     * @return  the course with that number or the NullCourse if no such number exists.
-     *
-     */
-//    public Course getCourseByNumber (String number) {
-//        for (GroceryItem c : _groceryItems ) {
-//            if (c.getNumber().equals(number)) return c;
-//        }
-//        return theNullGroceryItem;
-//    }
 
     /**
      * Return a course that has the matching id
