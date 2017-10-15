@@ -10,18 +10,30 @@ import java.math.RoundingMode;
 public class GroceryItem {
     private String name;
     private BigDecimal price;
+    private int id;
 
     public GroceryItem() {
-        this("No name", BigDecimal.ZERO);
+        this("No name", BigDecimal.ZERO, -1);
     }
 
     public GroceryItem(String name, BigDecimal price) {
         this.name = name;
         this.price = price.setScale(2, RoundingMode.HALF_UP);
+        this.id = GroceryItemManager.getInstance().getNewId();
     }
 
     public GroceryItem(String name, String price) {
         this(name, new BigDecimal(price));
+    }
+
+    public GroceryItem(String name, BigDecimal price, int id) {
+        this.name = name;
+        this.price = price.setScale(2, RoundingMode.HALF_UP);
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
