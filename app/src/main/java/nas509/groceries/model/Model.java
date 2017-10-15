@@ -26,7 +26,7 @@ public class Model {
     private static final Model _instance = new Model();
     public static Model getInstance() { return _instance; }
     private GroceryItemManager groceryItemManager;
-
+    private PersistenceManager persistenceManager;
     /**
      * make a new model
      */
@@ -60,6 +60,14 @@ public class Model {
 
     public int removeGroceryItem(int id) {
         return groceryItemManager.removeGroceryItem(id);
+    }
+
+    public boolean loadText(File file) {
+        return persistenceManager.loadText(file);
+    }
+
+    public boolean saveText(File file) {
+        return persistenceManager.saveText(file);
     }
 
     // TODO: separate model into itemManager and itemManagementFacade
