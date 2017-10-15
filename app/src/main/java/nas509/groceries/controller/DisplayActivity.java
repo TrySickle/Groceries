@@ -106,7 +106,7 @@ public class DisplayActivity extends AppCompatActivity {
                 //Step 2.  Hook up the adapter to the view
                 setupRecyclerView((RecyclerView) recyclerView);
             }
-        }, 500);
+        }, 1000);
     }
 
     /**
