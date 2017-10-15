@@ -14,6 +14,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import nas509.groceries.controller.DisplayActivity;
+
 
 /**
  * Created by *** on 1/5/17.
@@ -42,8 +44,8 @@ public class Model {
         groceryItemManager.getDatabase();
     }
 
-    public void retrieveData() {
-        groceryItemManager.retrieveData();
+    public void retrieveData(DisplayActivity.GroceryItemRecyclerViewAdapter adapter) {
+        groceryItemManager.retrieveData(adapter);
     }
 
     /**

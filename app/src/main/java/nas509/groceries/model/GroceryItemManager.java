@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
+import nas509.groceries.controller.DisplayActivity;
+
 
 /**
  * Created by robertwaters on 1/5/17.
@@ -62,7 +64,7 @@ public class GroceryItemManager {
         return FirebaseDatabase.getInstance().getReference("groceries");
     }
 
-    public void retrieveData() {
+    public void retrieveData(final DisplayActivity.GroceryItemRecyclerViewAdapter adapter) {
         databaseGroceries.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -83,6 +85,7 @@ public class GroceryItemManager {
                     _groceryItems.add(new GroceryItem(name, money, id));
                 }
                 idSeed = highestId + 1;
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -90,16 +93,6 @@ public class GroceryItemManager {
 
             }
         });
-    }
-    /**
-     * populate the model with some dummy data.  The full app would not require this.
-     * comment out when adding new courses functionality is present.
-     */
-    public void loadDummyData() {
-        _groceryItems.add(new GroceryItem("Milk", BigDecimal.valueOf(3.50)));
-        _groceryItems.add(new GroceryItem("Eggs", BigDecimal.valueOf(2.27)));
-        _groceryItems.add(new GroceryItem("Hot Cheetos", BigDecimal.valueOf(3.99)));
-        _currentGroceryItem = _groceryItems.get(0);
     }
 
     public int getNewId() {

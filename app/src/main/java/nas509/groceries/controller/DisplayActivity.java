@@ -77,7 +77,7 @@ public class DisplayActivity extends AppCompatActivity {
         // ...
 
         // Load
-        model.retrieveData();
+        model.retrieveData(adapter);
         onItemsLoadComplete();
     }
 
@@ -93,20 +93,26 @@ public class DisplayActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        model.retrieveData();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-                adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
-                //Step 1.  Setup the recycler view by getting it from our layout in the main window
-                recyclerView = findViewById(R.id.recycler_list);
-                assert recyclerView != null;
-                //Step 2.  Hook up the adapter to the view
-                setupRecyclerView((RecyclerView) recyclerView);
-            }
-        }, 1000);
+        adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
+        //Step 1.  Setup the recycler view by getting it from our layout in the main window
+        recyclerView = findViewById(R.id.recycler_list);
+        assert recyclerView != null;
+        //Step 2.  Hook up the adapter to the view
+        setupRecyclerView((RecyclerView) recyclerView);
+        model.retrieveData(adapter);
+//        final Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                // Do something after 5s = 5000ms
+//                adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
+//                //Step 1.  Setup the recycler view by getting it from our layout in the main window
+//                recyclerView = findViewById(R.id.recycler_list);
+//                assert recyclerView != null;
+//                //Step 2.  Hook up the adapter to the view
+//                setupRecyclerView((RecyclerView) recyclerView);
+//            }
+//        }, 1000);
     }
 
     /**
