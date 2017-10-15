@@ -2,6 +2,9 @@ package nas509.groceries.model;
 
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,13 +43,20 @@ public class GroceryItemManager {
 
     private int idSeed;
 
+    DatabaseReference databaseGroceries;
+
     /**
      * make a new model
      */
     private GroceryItemManager() {
         _groceryItems = new ArrayList<>();
         idSeed = 0;
+        databaseGroceries = getDatabase();
         //comment this out after full app developed -- for homework leave in
+    }
+
+    public DatabaseReference getDatabase() {
+        return FirebaseDatabase.getInstance().getReference("groceries");
     }
 
     /**
@@ -83,6 +93,7 @@ public class GroceryItemManager {
             if (g.equals(groceryItem)) return false;
         }
         _groceryItems.add(groceryItem);
+        databaseGroceries.child(Integer.toString(groceryItem.getId())).setValue(groceryItem);
         return true;
     }
 

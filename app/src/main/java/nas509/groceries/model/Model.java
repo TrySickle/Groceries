@@ -2,6 +2,9 @@ package nas509.groceries.model;
 
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +38,9 @@ public class Model {
         persistenceManager = PersistenceManager.getInstance();
     }
 
+    public void getDatabase() {
+        groceryItemManager.getDatabase();
+    }
 
     /**
      * get the courses

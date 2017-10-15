@@ -65,8 +65,8 @@ public class GroceryItem {
         this.name = name;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getPrice() {
+        return price.toPlainString();
     }
 
     public String getPriceString() {
