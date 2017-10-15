@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -131,5 +132,47 @@ public class GroceryItemManager {
             }
         }
         return theNullGroceryItem;
+    }
+
+    /**
+     *
+     * @param writer
+     */
+    void saveAsText(PrintWriter writer) {
+        System.out.println("Manager saving: " + _groceryItems.size() + " grocery items" );
+        writer.println(_groceryItems.size());
+        for(GroceryItem g : _groceryItems) {
+            g.saveAsText(writer);
+        }
+    }
+
+    /**
+     * load the model from a custom text file
+     *
+     * @param reader  the file to read from
+     */
+    void loadFromText(BufferedReader reader) {
+        System.out.println("Loading Text File");
+        //studentMap.clear();
+        _groceryItems.clear();
+        try {
+            String countStr = reader.readLine();
+            assert countStr != null;
+            int count = Integer.parseInt(countStr);
+
+            //then read in each user to model
+            for (int i = 0; i < count; ++i) {
+                String line = reader.readLine();
+                GroceryItem g = GroceryItem.parseEntry(line);
+                _groceryItems.add(g);
+                //studentMap.put(g.getName(), g);
+            }
+            //be sure and close the file
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Done loading text file with " + _groceryItems.size() + " grocery items");
+
     }
 }

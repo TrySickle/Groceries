@@ -45,7 +45,7 @@ public class PersistenceManager {
         try {
             //make an input object for reading
             BufferedReader reader = new BufferedReader(new FileReader(file));
- //           gm.loadFromText(reader);
+            gm.loadFromText(reader);
 
         } catch (FileNotFoundException e) {
             Log.e("ModelSingleton", "Failed to open text file for loading!");
@@ -59,7 +59,7 @@ public class PersistenceManager {
         System.out.println("Saving as a text file");
         try {
             PrintWriter pw = new PrintWriter(file);
-//            gm.saveAsText(pw);
+            gm.saveAsText(pw);
             pw.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
