@@ -47,7 +47,7 @@ public class Model {
      *
      * uses O(n) linear search for course
      *
-     * @param course  the course to be added
+     * @param groceryItem  the course to be added
      * @return true if added, false if a duplicate
      */
     public boolean addGroceryItem(GroceryItem groceryItem) {
@@ -118,12 +118,8 @@ public class Model {
      * @param id the id number of the course
      * @return the course with this id or theNullGroceryItem if no such id exists.
      */
-//    public GroceryItem getGroceryItemById(int id) {
-//        for (GroceryItem c : _groceryItems ) {
-//            if (c.getId() == id) {
-//                return c;
-//            }
-//        }
-//        return theNullGroceryItem;
-//    }
+
+    public GroceryItem getGroceryItemById(int id) {
+        return groceryItemManager.getGroceryItemById(id);
+    }
 }

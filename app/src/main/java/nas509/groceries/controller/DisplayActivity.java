@@ -142,29 +142,30 @@ public class DisplayActivity extends AppCompatActivity {
              */
             holder.mNameView.setText(mGroceryItems.get(position).getName());
             holder.mPriceView.setText(mGroceryItems.get(position).getPriceString());
+            holder.mGroceryItem = mGroceryItems.get(position);
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
              */
-//            holder.mView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                        //on a phone, we need to change windows to the detail view
-//                        Context context = v.getContext();
-//                        //create our new intent with the new screen (activity)
-//                        Intent intent = new Intent(context, CourseDetailActivity.class);
-//                        /*
-//                            pass along the id of the course so we can retrieve the correct data in
-//                            the next window
-//                         */
-//                        intent.putExtra(CourseDetailFragment.ARG_COURSE_ID, holder.mCourse.getId());
-//
-//                        model.setCurrentCourse(holder.mCourse);
-//
-//                        //now just display the new window
-//                        context.startActivity(intent);
-//                }
-//            });
+            holder.mView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        //on a phone, we need to change windows to the detail view
+                        Context context = v.getContext();
+                        //create our new intent with the new screen (activity)
+                        Intent intent = new Intent(context, EditGroceryItemActivity.class);
+                        /*
+                            pass along the id of the course so we can retrieve the correct data in
+                            the next window
+                         */
+                        intent.putExtra(EditGroceryItemActivity.ARG_GROCERY_ID, holder.mGroceryItem.getId());
+
+//                      model.setCurrentCourse(holder.mCourse);
+
+                        //now just display the new window
+                        context.startActivity(intent);
+                }
+            });
         }
 
         @Override
