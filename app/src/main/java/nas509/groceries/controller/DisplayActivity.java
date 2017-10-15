@@ -77,7 +77,7 @@ public class DisplayActivity extends AppCompatActivity {
         // ...
 
         // Load
-        model.retrieveData(adapter);
+        //model.retrieveData(adapter);
         onItemsLoadComplete();
     }
 
@@ -99,7 +99,7 @@ public class DisplayActivity extends AppCompatActivity {
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
-        model.retrieveData(adapter);
+        //model.retrieveData(adapter);
 //        final Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {
 //            @Override

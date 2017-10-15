@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nas509.groceries.controller.DisplayActivity;
+import nas509.groceries.controller.MyListFragment;
 
 
 /**
@@ -44,7 +45,7 @@ public class Model {
         groceryItemManager.getDatabase();
     }
 
-    public void retrieveData(DisplayActivity.GroceryItemRecyclerViewAdapter adapter) {
+    public void retrieveData(MyListFragment.GroceryItemRecyclerViewAdapter adapter) {
         groceryItemManager.retrieveData(adapter);
     }
 

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import nas509.groceries.controller.DisplayActivity;
+import nas509.groceries.controller.MyListFragment;
 
 
 /**
@@ -64,7 +65,7 @@ public class GroceryItemManager {
         return FirebaseDatabase.getInstance().getReference("groceries");
     }
 
-    public void retrieveData(final DisplayActivity.GroceryItemRecyclerViewAdapter adapter) {
+    public void retrieveData(final MyListFragment.GroceryItemRecyclerViewAdapter adapter) {
         databaseGroceries.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
