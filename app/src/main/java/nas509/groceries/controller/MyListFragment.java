@@ -36,6 +36,35 @@ public class MyListFragment extends Fragment {
 
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_my_list, container, false);
+
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addGroceryItemDialog();
+            }
+        });
+        recyclerView = view.findViewById(R.id.recycler_list);
+        assert recyclerView != null;
+
+        // filesDir = this.getFilesDir();
+        model = Model.getInstance();
+        // File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+        // model.loadText(file);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                refreshItems();
+            }
+        });
+        return view;
+    }
+
     void refreshItems() {
         // Load items
         // ...
@@ -259,33 +288,5 @@ public class MyListFragment extends Fragment {
                 return super.toString() + " '" + mPriceView.getText() + "'";
             }
         }
-    }
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_list, container, false);
-
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addGroceryItemDialog();
-            }
-        });
-        recyclerView = view.findViewById(R.id.recycler_list);
-        assert recyclerView != null;
-
-        // filesDir = this.getFilesDir();
-        model = Model.getInstance();
-        // File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
-        // model.loadText(file);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Refresh items
-                refreshItems();
-            }
-        });
-        return view;
     }
 }

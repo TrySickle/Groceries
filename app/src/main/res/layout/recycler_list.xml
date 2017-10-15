@@ -15,5 +15,6 @@
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
         tools:context="nas509.groceries.controller.MyListFragment"
-        tools:listitem="@layout/list_content" />
+        tools:listitem="@layout/list_content"
+        android:theme="@style/AppTheme"/>
 </android.support.v4.widget.SwipeRefreshLayout>
