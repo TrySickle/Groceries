@@ -32,7 +32,7 @@ public class Model {
      */
     private Model() {
         groceryItemManager = GroceryItemManager.getInstance();
-        groceryItemManager.loadDummyData();
+        persistenceManager = PersistenceManager.getInstance();
     }
 
 

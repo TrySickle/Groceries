@@ -13,23 +13,27 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.List;
 
 import nas509.groceries.R;
 import nas509.groceries.model.GroceryItem;
 import nas509.groceries.model.Model;
+import nas509.groceries.model.PersistenceManager;
 
 public class DisplayActivity extends AppCompatActivity {
 
     Model model;
     GroceryItemRecyclerViewAdapter adapter;
     View recyclerView;
+    File filesDir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,10 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
+        filesDir = this.getFilesDir();
         model = Model.getInstance();
+        File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+        model.loadText(file);
         adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         recyclerView = findViewById(R.id.recycler_list);
@@ -82,6 +89,8 @@ public class DisplayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
                     model.editGroceryItem(groceryId, name.getText().toString(), price.getText().toString());
+                    File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+                    model.saveText(file);
                     adapter.notifyDataSetChanged();
                 } else {
                     dialog.cancel();
@@ -95,6 +104,8 @@ public class DisplayActivity extends AppCompatActivity {
                     {
                         int index = model.removeGroceryItem(groceryId);
                         if (index >= 0) {
+                            File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+                            model.saveText(file);
                             adapter.notifyItemRemoved(index);
                         }
                     }
@@ -125,6 +136,8 @@ public class DisplayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
                     model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString()));
+                    File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+                    model.saveText(file);
                 } else {
                     dialog.cancel();
                 }

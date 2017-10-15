@@ -159,16 +159,21 @@ public class GroceryItemManager {
             String countStr = reader.readLine();
             assert countStr != null;
             int count = Integer.parseInt(countStr);
-
+            int highestId = 0;
             //then read in each user to model
             for (int i = 0; i < count; ++i) {
                 String line = reader.readLine();
                 GroceryItem g = GroceryItem.parseEntry(line);
                 _groceryItems.add(g);
+                String[] tokens = line.split("\t");
+                if (Integer.valueOf(tokens[2]) > highestId) {
+                    highestId = Integer.valueOf(tokens[2]);
+                }
                 //studentMap.put(g.getName(), g);
             }
             //be sure and close the file
             reader.close();
+            idSeed = highestId + 1;
         } catch (IOException e) {
             e.printStackTrace();
         }

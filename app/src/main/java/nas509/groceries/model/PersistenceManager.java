@@ -33,6 +33,9 @@ public class PersistenceManager {
      */
     private static PersistenceManager instance = new PersistenceManager();
 
+    public static PersistenceManager getInstance() {
+        return instance;
+    }
 
     /**
      * private constructor for facade pattern
