@@ -2,8 +2,11 @@ package nas509.groceries.model;
 
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -59,6 +62,30 @@ public class GroceryItemManager {
         return FirebaseDatabase.getInstance().getReference("groceries");
     }
 
+    public void retrieveData() {
+        databaseGroceries.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                _groceryItems.clear();
+
+                for (DataSnapshot grocerySnapshot : dataSnapshot.getChildren()) {
+                    //GroceryItem grocery = grocerySnapshot.getValue(GroceryItem.class);
+                    String name = (String) (grocerySnapshot.child("name").getValue());
+                    String value = (String) grocerySnapshot.child("price").getValue();
+                    BigDecimal money = new BigDecimal(value.replaceAll(",", ""));
+                    long l = (long) grocerySnapshot.child("id").getValue();
+                    int id = (int) l;
+                    _groceryItems.add(new GroceryItem(name, money, id));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     /**
      * populate the model with some dummy data.  The full app would not require this.
      * comment out when adding new courses functionality is present.
@@ -103,7 +130,9 @@ public class GroceryItemManager {
             index++;
         }
         if (_groceryItems.get(index).getId() == id) {
-            _groceryItems.set(index, new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id));
+            GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id);
+            _groceryItems.set(index, updated);
+            databaseGroceries.child(Integer.toString(updated.getId())).setValue(updated);
             return true;
         }
         return false;
@@ -115,6 +144,7 @@ public class GroceryItemManager {
             index++;
         }
         if (_groceryItems.get(index).getId() == id) {
+            databaseGroceries.child(Integer.toString(_groceryItems.get(index).getId())).removeValue();
             _groceryItems.remove(index);
             return index;
         }
@@ -149,46 +179,46 @@ public class GroceryItemManager {
      *
      * @param writer
      */
-    void saveAsText(PrintWriter writer) {
-        System.out.println("Manager saving: " + _groceryItems.size() + " grocery items" );
-        writer.println(_groceryItems.size());
-        for(GroceryItem g : _groceryItems) {
-            g.saveAsText(writer);
-        }
-    }
+//    void saveAsText(PrintWriter writer) {
+//        System.out.println("Manager saving: " + _groceryItems.size() + " grocery items" );
+//        writer.println(_groceryItems.size());
+//        for(GroceryItem g : _groceryItems) {
+//            g.saveAsText(writer);
+//        }
+//    }
 
     /**
      * load the model from a custom text file
      *
      * @param reader  the file to read from
      */
-    void loadFromText(BufferedReader reader) {
-        System.out.println("Loading Text File");
-        //studentMap.clear();
-        _groceryItems.clear();
-        try {
-            String countStr = reader.readLine();
-            assert countStr != null;
-            int count = Integer.parseInt(countStr);
-            int highestId = 0;
-            //then read in each user to model
-            for (int i = 0; i < count; ++i) {
-                String line = reader.readLine();
-                GroceryItem g = GroceryItem.parseEntry(line);
-                _groceryItems.add(g);
-                String[] tokens = line.split("\t");
-                if (Integer.valueOf(tokens[2]) > highestId) {
-                    highestId = Integer.valueOf(tokens[2]);
-                }
-                //studentMap.put(g.getName(), g);
-            }
-            //be sure and close the file
-            reader.close();
-            idSeed = highestId + 1;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("Done loading text file with " + _groceryItems.size() + " grocery items");
-
-    }
+//    void loadFromText(BufferedReader reader) {
+//        System.out.println("Loading Text File");
+//        //studentMap.clear();
+//        _groceryItems.clear();
+//        try {
+//            String countStr = reader.readLine();
+//            assert countStr != null;
+//            int count = Integer.parseInt(countStr);
+//            int highestId = 0;
+//            //then read in each user to model
+//            for (int i = 0; i < count; ++i) {
+//                String line = reader.readLine();
+//                GroceryItem g = GroceryItem.parseEntry(line);
+//                _groceryItems.add(g);
+//                String[] tokens = line.split("\t");
+//                if (Integer.valueOf(tokens[2]) > highestId) {
+//                    highestId = Integer.valueOf(tokens[2]);
+//                }
+//                //studentMap.put(g.getName(), g);
+//            }
+//            //be sure and close the file
+//            reader.close();
+//            idSeed = highestId + 1;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("Done loading text file with " + _groceryItems.size() + " grocery items");
+//
+//    }
 }

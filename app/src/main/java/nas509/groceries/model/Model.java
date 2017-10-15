@@ -29,17 +29,21 @@ public class Model {
     private static final Model _instance = new Model();
     public static Model getInstance() { return _instance; }
     private GroceryItemManager groceryItemManager;
-    private PersistenceManager persistenceManager;
+//    private PersistenceManager persistenceManager;
     /**
      * make a new model
      */
     private Model() {
         groceryItemManager = GroceryItemManager.getInstance();
-        persistenceManager = PersistenceManager.getInstance();
+//        persistenceManager = PersistenceManager.getInstance();
     }
 
     public void getDatabase() {
         groceryItemManager.getDatabase();
+    }
+
+    public void retrieveData() {
+        groceryItemManager.retrieveData();
     }
 
     /**
@@ -68,13 +72,13 @@ public class Model {
         return groceryItemManager.removeGroceryItem(id);
     }
 
-    public boolean loadText(File file) {
-        return persistenceManager.loadText(file);
-    }
+//    public boolean loadText(File file) {
+//        return persistenceManager.loadText(file);
+//    }
 
-    public boolean saveText(File file) {
-        return persistenceManager.saveText(file);
-    }
+//    public boolean saveText(File file) {
+//        return persistenceManager.saveText(file);
+//    }
 
     // TODO: separate model into itemManager and itemManagementFacade
 //    public boolean saveText(File file) {

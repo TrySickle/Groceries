@@ -10,6 +10,7 @@ import java.math.RoundingMode;
 
 public class GroceryItem {
     private String name;
+
     private BigDecimal price;
     private int id;
 

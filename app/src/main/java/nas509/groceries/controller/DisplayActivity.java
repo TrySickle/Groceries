@@ -29,7 +29,7 @@ import java.util.List;
 import nas509.groceries.R;
 import nas509.groceries.model.GroceryItem;
 import nas509.groceries.model.Model;
-import nas509.groceries.model.PersistenceManager;
+
 
 public class DisplayActivity extends AppCompatActivity {
 
@@ -43,8 +43,6 @@ public class DisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
 
-        //model.getDatabase();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
@@ -57,10 +55,16 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
-        filesDir = this.getFilesDir();
+       // filesDir = this.getFilesDir();
         model = Model.getInstance();
-        File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
-        model.loadText(file);
+       // File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+       // model.loadText(file);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        model.retrieveData();
         adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
         recyclerView = findViewById(R.id.recycler_list);
@@ -94,8 +98,8 @@ public class DisplayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
                     model.editGroceryItem(groceryId, name.getText().toString(), price.getText().toString());
-                    File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
-                    model.saveText(file);
+                    //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+                    //model.saveText(file);
                     adapter.notifyDataSetChanged();
                 } else {
                     dialog.cancel();
@@ -109,8 +113,8 @@ public class DisplayActivity extends AppCompatActivity {
                     {
                         int index = model.removeGroceryItem(groceryId);
                         if (index >= 0) {
-                            File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
-                            model.saveText(file);
+                            //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+                            //model.saveText(file);
                             adapter.notifyItemRemoved(index);
                         }
                     }
@@ -141,8 +145,8 @@ public class DisplayActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int id) {
                 if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
                     model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString()));
-                    File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
-                    model.saveText(file);
+                    //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
+                    //model.saveText(file);
                 } else {
                     dialog.cancel();
                 }
