@@ -58,6 +58,10 @@ public class Model {
         return groceryItemManager.editGroceryItem(id, name, price);
     }
 
+    public int removeGroceryItem(int id) {
+        return groceryItemManager.removeGroceryItem(id);
+    }
+
     // TODO: separate model into itemManager and itemManagementFacade
 //    public boolean saveText(File file) {
 //        System.out.println("Saving as a text file");

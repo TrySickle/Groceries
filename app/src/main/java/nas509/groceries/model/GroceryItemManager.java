@@ -88,17 +88,25 @@ public class GroceryItemManager {
     public boolean editGroceryItem(int id, String name, String price) {
         int index = 0;
         while (index < _groceryItems.size() && _groceryItems.get(index).getId() != id) {
-            Log.d("edit", _groceryItems.get(index).getName());
             index++;
         }
         if (_groceryItems.get(index).getId() == id) {
             _groceryItems.set(index, new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id));
-            for (GroceryItem g : _groceryItems) {
-                Log.d("all", g.getName());
-            }
             return true;
         }
         return false;
+    }
+
+    public int removeGroceryItem(int id) {
+        int index = 0;
+        while (index < _groceryItems.size() && _groceryItems.get(index).getId() != id) {
+            index++;
+        }
+        if (_groceryItems.get(index).getId() == id) {
+            _groceryItems.remove(index);
+            return index;
+        }
+        return -1;
     }
 
     /**

@@ -29,6 +29,7 @@ public class DisplayActivity extends AppCompatActivity {
 
     Model model;
     GroceryItemRecyclerViewAdapter adapter;
+    View recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,7 @@ public class DisplayActivity extends AppCompatActivity {
         model = Model.getInstance();
         adapter = new GroceryItemRecyclerViewAdapter(model.getGroceryItems());
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
-        View recyclerView = findViewById(R.id.recycler_list);
+        recyclerView = findViewById(R.id.recycler_list);
         assert recyclerView != null;
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
@@ -79,10 +80,25 @@ public class DisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                model.editGroceryItem(groceryId, name.getText().toString(), price.getText().toString());
-                adapter.notifyDataSetChanged();
+                if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
+                    model.editGroceryItem(groceryId, name.getText().toString(), price.getText().toString());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    dialog.cancel();
+                }
             }
         });
+        builder.setNeutralButton("Delete",
+                new DialogInterface.OnClickListener()
+                {
+                    public void onClick(DialogInterface dialog, int id)
+                    {
+                        int index = model.removeGroceryItem(groceryId);
+                        if (index > 0) {
+                            adapter.notifyItemRemoved(index);
+                        }
+                    }
+                });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
@@ -107,7 +123,11 @@ public class DisplayActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString()));
+                if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
+                    model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString()));
+                } else {
+                    dialog.cancel();
+                }
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
