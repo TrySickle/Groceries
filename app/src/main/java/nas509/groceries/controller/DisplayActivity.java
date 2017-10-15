@@ -94,7 +94,7 @@ public class DisplayActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id)
                     {
                         int index = model.removeGroceryItem(groceryId);
-                        if (index > 0) {
+                        if (index >= 0) {
                             adapter.notifyItemRemoved(index);
                         }
                     }
