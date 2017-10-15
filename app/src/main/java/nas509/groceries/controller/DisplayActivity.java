@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -37,6 +38,7 @@ public class DisplayActivity extends AppCompatActivity {
     Model model;
     GroceryItemRecyclerViewAdapter adapter;
     View recyclerView;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     File filesDir;
 
     @Override
@@ -60,6 +62,32 @@ public class DisplayActivity extends AppCompatActivity {
         model = Model.getInstance();
        // File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
        // model.loadText(file);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                refreshItems();
+            }
+        });
+    }
+
+    void refreshItems() {
+        // Load items
+        // ...
+
+        // Load
+        model.retrieveData();
+        onItemsLoadComplete();
+    }
+
+    void onItemsLoadComplete() {
+        // Update the adapter and notify data set changed
+        // ...
+
+        adapter.notifyDataSetChanged();
+        // Stop refresh animation
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
