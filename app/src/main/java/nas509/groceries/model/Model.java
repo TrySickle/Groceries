@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import nas509.groceries.controller.DisplayActivity;
+
 import nas509.groceries.controller.MyListFragment;
 
 
@@ -32,12 +32,14 @@ public class Model {
     private static final Model _instance = new Model();
     public static Model getInstance() { return _instance; }
     private GroceryItemManager groceryItemManager;
+    private UserManager userManager;
 //    private PersistenceManager persistenceManager;
     /**
      * make a new model
      */
     private Model() {
         groceryItemManager = GroceryItemManager.getInstance();
+        userManager = UserManager.getInstance();
 //        persistenceManager = PersistenceManager.getInstance();
     }
 
@@ -47,6 +49,10 @@ public class Model {
 
     public void retrieveData(MyListFragment.GroceryItemRecyclerViewAdapter adapter) {
         groceryItemManager.retrieveData(adapter);
+    }
+
+    public void retrieveUsers() {
+        userManager.retrieveUsers();
     }
 
     /**

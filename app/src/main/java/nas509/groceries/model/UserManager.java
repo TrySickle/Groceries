@@ -1,5 +1,11 @@
 package nas509.groceries.model;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +33,44 @@ public class UserManager {
     /** The currently logged in user, changes the appActivity text */
     private User loggedInUser;
 
+
+    DatabaseReference databaseUsers;
+
     /** Private constructor for singleton */
     private UserManager() {
         _usersPasswords = new HashMap<>();
         _users = new HashMap<>();
         loggedInUser = null;
+        databaseUsers = getDatabase();
+    }
+
+    public DatabaseReference getDatabase() {
+        return FirebaseDatabase.getInstance().getReference("users");
+    }
+
+    public void retrieveUsers() {
+        databaseUsers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                _usersPasswords.clear();
+                _users.clear();
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
+                    _users.put(user.getUsername(), user);
+                    _usersPasswords.put(user.getUsername(), user.getPassword());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public String getNewId() {
+        return databaseUsers.push().getKey();
     }
 
     /** Getter and setter */
@@ -56,6 +95,8 @@ public class UserManager {
         }
         _users.put(user.getUsername().toLowerCase(), user);
         _usersPasswords.put(user.getUsername().toLowerCase(), user.getPassword());
+        databaseUsers.child(user.getId()).setValue(user);
+
         return true;
     }
 

@@ -13,6 +13,8 @@ public class User {
     /** The user's password, case sensitive */
     private final String password;
 
+    private String id;
+
     /** Make a new user, default "user", "pass" */
     public User() {
         this("user", "pass");
@@ -23,9 +25,16 @@ public class User {
      * @param username      The user's username
      * @param password      The user's password
      */
-    public User(String username, String password) {
+
+    public User (String username, String password) {
         this.username = username;
         this.password = password;
+        this.id = UserManager.getInstance().getNewId();
+    }
+    public User(String username, String password, String id) {
+        this.username = username;
+        this.password = password;
+        this.id = id;
     }
 
     /** Getters */
@@ -35,6 +44,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getId() {
+        return id;
     }
 
     /**

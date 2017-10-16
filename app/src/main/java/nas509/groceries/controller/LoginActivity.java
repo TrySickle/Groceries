@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import nas509.groceries.R;
+import nas509.groceries.model.Model;
 import nas509.groceries.model.UserManager;
 
 /**
@@ -27,11 +28,14 @@ public class LoginActivity extends AppCompatActivity {
     /** UI references */
     private EditText mUsernameView;
     private EditText mPasswordView;
+    Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        model = Model.getInstance();
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -66,6 +70,12 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        model.retrieveUsers();
     }
 
     /** when cancel is pressed, closes activity */

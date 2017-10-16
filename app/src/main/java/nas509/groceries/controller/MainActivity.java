@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import nas509.groceries.R;
+import nas509.groceries.model.Model;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,4 +50,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
