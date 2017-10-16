@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.WelcomeActivity">
+
+    <!--<ImageView-->
+        <!--android:id="@+id/welcome_splash"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/rat_splash"-->
+        <!--android:scaleType="fitXY"/>-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/app_name_display"
+            android:layout_width="300dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="25dp"
+            android:gravity="center"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.3"
+            android:shadowRadius="1.6"
+            android:text="Groceries"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"/>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="25dp"
+            android:background="@drawable/button_shape"
+            android:onClick="loginClick"
+            android:text="Login"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            />
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="25dp"
+            android:background="@drawable/button_shape"
+            android:onClick="registerClick"
+            android:text="Register"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            />
+        <Button
+            android:id="@+id/skip_button"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/app_name_display"
+            android:layout_margin="150dp"
+            android:background="@drawable/button_shape"
+            android:onClick="skipClick"
+            android:text="Skip"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            />
+
+    </RelativeLayout>
+
+</FrameLayout>
