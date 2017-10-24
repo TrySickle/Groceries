@@ -11,9 +11,12 @@ public class Group {
 
     private String groupName;
 
+    private int size;
+
     public Group() {
         users = new HashMap<>();
         groupName = "";
+        size = 0;
     }
 
     public Group(String groupName) {
@@ -23,7 +26,21 @@ public class Group {
 
     public void addUser(User u) {
         users.put(u.getId(), u);
+        size = users.size();
 //        u.setGroupName(groupName);
+    }
+
+    public void removeUser(User u) {
+        users.remove(u.getId());
+        size = users.size();
+    }
+
+    public boolean isEmpty() {
+        return users.isEmpty();
+    }
+
+    public int getSize() {
+        return size;
     }
 
     public User getUser(String id) {
