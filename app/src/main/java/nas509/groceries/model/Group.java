@@ -1,6 +1,7 @@
 package nas509.groceries.model;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by jason on 10/23/2017.
@@ -36,7 +37,7 @@ public class Group {
     }
 
     public boolean isEmpty() {
-        return users.isEmpty();
+        return users.size() == 0;
     }
 
     public int getSize() {
@@ -45,6 +46,10 @@ public class Group {
 
     public User getUser(String id) {
         return users.get(id);
+    }
+
+    public Map<String, User> getUsers() {
+        return users;
     }
 
     public String getGroupName() {

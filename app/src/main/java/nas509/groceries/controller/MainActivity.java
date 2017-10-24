@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Join Group");
 
+        final Model model = Model.getInstance();
+
         LayoutInflater inflater = this.getLayoutInflater();
         View viewInflated = inflater.inflate(R.layout.dialog_join_group, null);
         final EditText groupName = (EditText) viewInflated.findViewById(R.id.group_name);
@@ -114,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 if (groupName.getText().toString().length() > 0) {
-                    Model.getInstance().addUserToGroup(groupName.getText().toString(), Model.getInstance().getLoggedInUser());
-                    Model.getInstance().setUserGroupName(groupName.getText().toString());
+                    model.addUserToGroup(groupName.getText().toString(), model.getLoggedInUser());
+                    Log.d("addUser", model.getLoggedInUser().getUsername());
+                    model.setUserGroupName(groupName.getText().toString());
                 } else {
                     dialog.cancel();
                 }

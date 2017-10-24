@@ -71,13 +71,16 @@ public class GroupManager {
     public void addUserToGroup(String groupName, User u) {
         addGroup(groupName);
         if (groupNames.containsKey(u.getGroupName())) {
+            Log.d("addUserToGroup", "in if");
             groupNames.get(u.getGroupName()).removeUser(u);
             if (groupNames.get(u.getGroupName()).isEmpty()) {
                 databaseGroups.child(u.getGroupName()).setValue(null);
+            } else {
+                databaseGroups.child(u.getGroupName()).setValue(groupNames.get(u.getGroupName()));
             }
         }
+        u.setGroupName(groupName);
         groupNames.get(groupName).addUser(u);
-        Log.d("group manager", Integer.toString(groupNames.get(groupName).getSize()));
         databaseGroups.child(groupName).setValue(groupNames.get(groupName));
     }
 

@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import nas509.groceries.R;
+import nas509.groceries.model.Model;
 import nas509.groceries.model.User;
 import nas509.groceries.model.UserManager;
 
@@ -29,12 +30,13 @@ public class RegisterActivity extends AppCompatActivity {
     /** UI references */
     private EditText mUsernameView;
     private EditText mPasswordView;
-    private Spinner mUserType;
+    private Model model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        model = Model.getInstance();
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
@@ -51,12 +53,8 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        // Spinner setup
         UserManager userManager = UserManager.getInstance();
-        //mUserType = (Spinner) findViewById(R.id.user_type_spinner);
-        //ArrayAdapter<String> adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item, userManager.getUserTypes());
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //mUserType.setAdapter(adapter);
+
 
         // setup register button listener
         Button mRegisterButton = (Button) findViewById(R.id.register_button);
@@ -75,6 +73,13 @@ public class RegisterActivity extends AppCompatActivity {
                 cancel();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        model.retrieveUsers();
+        model.retrieveGroups();
     }
 
     /** when cancel is pressed, closes activity */

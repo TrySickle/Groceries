@@ -1,5 +1,7 @@
 package nas509.groceries.model;
 
+import android.util.Log;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -59,8 +61,9 @@ public class UserManager {
                 _users.clear();
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     User user = userSnapshot.getValue(User.class);
-                    _users.put(user.getUsername(), user);
-                    _usersPasswords.put(user.getUsername(), user.getPassword());
+                    Log.d("retrieveUsers", user.getUsername());
+                    _users.put(user.getUsername().toLowerCase(), user);
+                    _usersPasswords.put(user.getUsername().toLowerCase(), user.getPassword());
                 }
             }
 
@@ -81,8 +84,13 @@ public class UserManager {
 
     /** Getter and setter */
     public void setLoggedInUser(User user) {
-        loggedInUsername = user.getUsername();
-        loggedInUser = _users.get(loggedInUsername);
+        if (user != null) {
+            loggedInUsername = user.getUsername();
+            loggedInUser = _users.get(loggedInUsername);
+        } else {
+            loggedInUser = null;
+            loggedInUsername = "";
+        }
     }
 
     public void setLoggedInUserGroup(String groupName) {
@@ -122,15 +130,6 @@ public class UserManager {
     }
 
     /**
-     * Check if this user is already registered with a User object
-     * @param user      The user object to check
-     * @return          True if the user is already registered, false if not
-     */
-    public boolean containsUser(User user) {
-        return _users.containsValue(user);
-    }
-
-    /**
      * Check if this user is already registered using their username as a String
      * @param username      The String representation of their username which is
      *                      checked ignoring case
@@ -157,16 +156,5 @@ public class UserManager {
     public boolean logout() {
         setLoggedInUser(null);
         return true;
-    }
-
-    /**
-     * Just for UI, helps set up spinner values in RegisterActivity
-     * @return      An List containing the user types: User and Admin
-     */
-    public List<String> getUserTypes() {
-        List<String> userTypes = new ArrayList<>();
-        userTypes.add("User");
-        userTypes.add("Admin");
-        return userTypes;
     }
 }
