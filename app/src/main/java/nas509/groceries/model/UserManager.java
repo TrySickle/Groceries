@@ -32,6 +32,7 @@ public class UserManager {
 
     /** The currently logged in user, changes the appActivity text */
     private User loggedInUser;
+    private String loggedInUsername;
 
 
     DatabaseReference databaseUsers;
@@ -41,6 +42,7 @@ public class UserManager {
         _usersPasswords = new HashMap<>();
         _users = new HashMap<>();
         loggedInUser = null;
+        loggedInUsername = "";
         databaseUsers = getDatabase();
     }
 
@@ -79,11 +81,17 @@ public class UserManager {
 
     /** Getter and setter */
     public void setLoggedInUser(User user) {
-        loggedInUser = user;
+        loggedInUsername = user.getUsername();
+        loggedInUser = _users.get(loggedInUsername);
+    }
+
+    public void setLoggedInUserGroup(String groupName) {
+        _users.get(loggedInUsername).setGroupName(groupName);
+        databaseUsers.child(_users.get(loggedInUsername).getId()).setValue(_users.get(loggedInUsername));
     }
 
     public User getLoggedInUser() {
-        return loggedInUser;
+        return _users.get(loggedInUsername);
     }
 
     /**
@@ -144,6 +152,11 @@ public class UserManager {
             return false;
         }
         return password.equals(_usersPasswords.get(username.toLowerCase()));
+    }
+
+    public boolean logout() {
+        setLoggedInUser(null);
+        return true;
     }
 
     /**

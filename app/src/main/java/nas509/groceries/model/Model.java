@@ -88,6 +88,18 @@ public class Model {
         return groceryItemManager.removeGroceryItem(id);
     }
 
+    public void setUserGroupName(String groupName) {
+        userManager.setLoggedInUserGroup(groupName);
+    }
+
+    public User getLoggedInUser() {
+        return UserManager.getInstance().getLoggedInUser();
+    }
+
+    public void addUserToGroup(String groupName, User u) {
+        groupManager.addUserToGroup(groupName, u);
+    }
+
 //    public boolean loadText(File file) {
 //        return persistenceManager.loadText(file);
 //    }

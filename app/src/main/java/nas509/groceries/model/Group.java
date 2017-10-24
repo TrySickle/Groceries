@@ -9,24 +9,21 @@ import java.util.HashMap;
 public class Group {
     private HashMap<String, User> users;
 
-    private String groupId;
     private String groupName;
 
     public Group() {
         users = new HashMap<>();
-        groupId = GroupManager.getInstance().getNewId();
         groupName = "";
     }
 
-    public Group(String groupId) {
+    public Group(String groupName) {
         users = new HashMap<>();
-        this.groupId = groupId;
-        groupName = "";
+        this.groupName = groupName;
     }
 
     public void addUser(User u) {
         users.put(u.getId(), u);
-        u.setGroupId(groupId);
+//        u.setGroupName(groupName);
     }
 
     public User getUser(String id) {
@@ -35,9 +32,5 @@ public class Group {
 
     public String getGroupName() {
         return groupName;
-    }
-
-    public String getGroupId() {
-        return groupId;
     }
 }

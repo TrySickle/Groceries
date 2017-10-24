@@ -19,13 +19,12 @@ public class GroupManager {
 
     private static final GroupManager _instance = new GroupManager();
     public static GroupManager getInstance() { return _instance; }
-    private HashMap<String, Group> groups; // groupId to group
+    private HashMap<String, Group> groupNames;
 
     private DatabaseReference databaseGroups;
-    String nullGroupId;
 
     private GroupManager() {
-        groups = new HashMap<>();
+        groupNames = new HashMap<>();
         databaseGroups = FirebaseDatabase.getInstance().getReference("groups"); // lol delete this
 //        databaseGroups.setValue(null);
 //        databaseGroups = FirebaseDatabase.getInstance().getReference("groups");
@@ -36,14 +35,14 @@ public class GroupManager {
         for (Map.Entry<String, User> entry : users.entrySet())
         {
             User u = entry.getValue();
-            if (groups.containsKey(u.getGroupId())) {
-                groups.get(u.getGroupId()).addUser(u);
-                databaseGroups.child(u.getGroupId()).setValue(groups.get(u.getGroupId()));
+            if (groupNames.containsKey(u.getGroupName())) {
+                groupNames.get(u.getGroupName()).addUser(u);
+                databaseGroups.child(u.getGroupName()).setValue(groupNames.get(u.getGroupName()));
             } else {
-                if (!u.getGroupId().equals("")) {
-                    groups.put(u.getGroupId(), new Group(u.getGroupId()));
-                    groups.get(u.getGroupId()).addUser(u);
-                    databaseGroups.child(u.getGroupId()).setValue(groups.get(u.getGroupId()));
+                if (!u.getGroupName().equals("")) {
+                    groupNames.put(u.getGroupName(), new Group(u.getGroupName()));
+                    groupNames.get(u.getGroupName()).addUser(u);
+                    databaseGroups.child(u.getGroupName()).setValue(groupNames.get(u.getGroupName()));
                 }
 
             }
@@ -55,10 +54,10 @@ public class GroupManager {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                groups.clear();
+                groupNames.clear();
                 for (DataSnapshot groupSnapshot : dataSnapshot.getChildren()) {
                     Group group = groupSnapshot.getValue(Group.class);
-                    groups.put(group.getGroupId(), group);
+                    groupNames.put(group.getGroupName(), group);
                 }
             }
 
@@ -68,16 +67,22 @@ public class GroupManager {
             }
         });
     }
-    
-    public String getNewId() {
-        return databaseGroups.push().getKey();
+
+    public void addUserToGroup(String groupName, User u) {
+        addGroup(groupName);
+        groupNames.get(groupName).addUser(u);
     }
 
-    public Group getGroup(String groupId) {
-        return groups.get(groupId);
+    public Group getGroup(String groupName) {
+        return groupNames.get(groupName);
     }
 
-    public void addGroup(Group group) {
-        groups.put(group.getGroupId(), group);
+    public boolean addGroup(String groupName) {
+        if (!groupNames.containsKey(groupName)) {
+            groupNames.put(groupName, new Group(groupName));
+            databaseGroups.child(groupName).setValue(groupNames.get(groupName));
+            return true;
+        }
+        return false;
     }
 }
