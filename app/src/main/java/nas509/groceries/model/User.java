@@ -15,6 +15,8 @@ public class User {
 
     private String id;
 
+    private String groupId;
+
     /** Make a new user, default "user", "pass" */
     public User() {
         this("user", "pass");
@@ -30,6 +32,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.id = UserManager.getInstance().getNewId();
+        this.groupId = "";
     }
     public User(String username, String password, String id) {
         this.username = username;
@@ -48,6 +51,14 @@ public class User {
 
     public String getId() {
         return id;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     /**

@@ -76,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         model.retrieveUsers();
+        model.retrieveGroups();
     }
 
     /** when cancel is pressed, closes activity */

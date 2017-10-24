@@ -33,6 +33,7 @@ public class Model {
     public static Model getInstance() { return _instance; }
     private GroceryItemManager groceryItemManager;
     private UserManager userManager;
+    private GroupManager groupManager;
 //    private PersistenceManager persistenceManager;
     /**
      * make a new model
@@ -40,6 +41,7 @@ public class Model {
     private Model() {
         groceryItemManager = GroceryItemManager.getInstance();
         userManager = UserManager.getInstance();
+        groupManager = GroupManager.getInstance();
 //        persistenceManager = PersistenceManager.getInstance();
     }
 
@@ -53,6 +55,11 @@ public class Model {
 
     public void retrieveUsers() {
         userManager.retrieveUsers();
+        //groupManager.createGroupsFromUsers(userManager.getUsers());
+    }
+
+    public void retrieveGroups() {
+        groupManager.retrieveGroups();
     }
 
     /**

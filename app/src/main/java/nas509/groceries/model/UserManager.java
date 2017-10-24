@@ -69,6 +69,10 @@ public class UserManager {
         });
     }
 
+    public Map<String, User> getUsers() {
+        return _users;
+    }
+
     public String getNewId() {
         return databaseUsers.push().getKey();
     }
