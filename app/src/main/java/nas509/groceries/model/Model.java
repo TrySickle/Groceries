@@ -56,6 +56,8 @@ public class Model {
      */
     public List<GroceryItem> getGroceryItems() { return groceryItemManager.getGroceryItems(); }
 
+    public List<GroceryItem> getMyList() { return groceryItemManager.getMyList(); }
+
     /**
      * add a course to the app.  checks if the course is already entered
      *
@@ -72,8 +74,8 @@ public class Model {
         return groceryItemManager.editGroceryItem(id, name, price);
     }
 
-    public int removeGroceryItem(int id) {
-        return groceryItemManager.removeGroceryItem(id);
+    public void removeGroceryItem(int id) {
+        groceryItemManager.removeGroceryItem(id);
     }
 
     public void setUserGroupName(String groupName) {

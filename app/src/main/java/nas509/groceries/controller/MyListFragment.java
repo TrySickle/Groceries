@@ -89,7 +89,7 @@ public class MyListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        adapter = new MyListFragment.GroceryItemRecyclerViewAdapter(model.getGroceryItems());
+        adapter = new MyListFragment.GroceryItemRecyclerViewAdapter(model.getMyList());
         //Step 1.  Setup the recycler view by getting it from our layout in the main window
 
         //Step 2.  Hook up the adapter to the view
@@ -148,12 +148,7 @@ public class MyListFragment extends Fragment {
                 {
                     public void onClick(DialogInterface dialog, int id)
                     {
-                        int index = model.removeGroceryItem(groceryId);
-                        if (index >= 0) {
-                            //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
-                            //model.saveText(file);
-                            adapter.notifyItemRemoved(index);
-                        }
+                        model.removeGroceryItem(groceryId);
                     }
                 });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

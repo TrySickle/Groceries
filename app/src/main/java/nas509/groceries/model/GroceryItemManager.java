@@ -40,6 +40,8 @@ public class GroceryItemManager {
     /** holds the list of all groceryItems */
     private List<GroceryItem> _groceryItems;
 
+    private List<GroceryItem> _myList;
+
     /** the currently selected groceryItem, defaults to first groceryItem */
     private GroceryItem _currentGroceryItem;
 
@@ -55,6 +57,7 @@ public class GroceryItemManager {
      */
     private GroceryItemManager() {
         _groceryItems = new ArrayList<>();
+        _myList = new ArrayList<>();
         idSeed = 0;
         databaseGroceries = getDatabase();
         //comment this out after full app developed -- for homework leave in
@@ -70,6 +73,7 @@ public class GroceryItemManager {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 _groceryItems.clear();
+                _myList.clear();
 
                 int highestId = 0;
                 for (DataSnapshot grocerySnapshot : dataSnapshot.getChildren()) {
@@ -83,7 +87,11 @@ public class GroceryItemManager {
                     if (id > highestId) {
                         highestId = id;
                     }
-                    _groceryItems.add(new GroceryItem(name, money, id, createdUserId));
+                    GroceryItem newItem = new GroceryItem(name, money, id, createdUserId);
+                    _groceryItems.add(newItem);
+                    if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                        _myList.add(newItem);
+                    }
                 }
                 idSeed = highestId + 1;
                 adapter.notifyDataSetChanged();
@@ -106,6 +114,8 @@ public class GroceryItemManager {
      */
     public List<GroceryItem> getGroceryItems() { return _groceryItems; }
 
+    public List<GroceryItem> getMyList() { return _myList; }
+
     /**
      * add a groceryItem to the app.  checks if the groceryItem is already entered
      *
@@ -119,6 +129,7 @@ public class GroceryItemManager {
             if (g.equals(groceryItem)) return false;
         }
         _groceryItems.add(groceryItem);
+        _myList.add(groceryItem);
         databaseGroceries.child(Integer.toString(groceryItem.getId())).setValue(groceryItem);
         return true;
     }
@@ -128,27 +139,41 @@ public class GroceryItemManager {
         while (index < _groceryItems.size() && _groceryItems.get(index).getId() != id) {
             index++;
         }
+        int indexForMyList = 0;
+        while (indexForMyList < _myList.size() && _myList.get(indexForMyList).getId() != id) {
+            indexForMyList++;
+        }
         if (_groceryItems.get(index).getId() == id) {
             GroceryItem old = _groceryItems.get(index);
             GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id, old.getCreatedUserId());
             _groceryItems.set(index, updated);
             databaseGroceries.child(Integer.toString(updated.getId())).setValue(updated);
+            if (_myList.get(indexForMyList).getId() == id) {
+                _myList.set(indexForMyList, updated);
+                return true;
+            }
             return true;
         }
+
         return false;
     }
 
-    public int removeGroceryItem(int id) {
+    public void removeGroceryItem(int id) {
         int index = 0;
         while (index < _groceryItems.size() && _groceryItems.get(index).getId() != id) {
             index++;
         }
+        int indexForMyList = 0;
+        while (indexForMyList < _myList.size() && _myList.get(indexForMyList).getId() != id) {
+            indexForMyList++;
+        }
         if (_groceryItems.get(index).getId() == id) {
             databaseGroceries.child(Integer.toString(_groceryItems.get(index).getId())).removeValue();
             _groceryItems.remove(index);
-            return index;
+            if (_myList.get(indexForMyList).getId() == id) {
+                _myList.remove(indexForMyList);
+            }
         }
-        return -1;
     }
 
     /**
