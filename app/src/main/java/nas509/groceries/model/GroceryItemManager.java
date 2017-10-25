@@ -17,6 +17,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -126,6 +127,22 @@ public class GroceryItemManager {
     public List<GroceryItem> getGroceryItems() { return _groceryItems; }
 
     public List<GroceryItem> getMyList() { return _myList; }
+
+    public void updateItemsGroupChange(String groupName, User user) {
+        HashMap<String, Object> updated = new HashMap<>();
+        for (GroceryItem item : _groceryItems) {
+            if (item.getCreatedUserId().equals(user.getId())) {
+                item.setGroupName(groupName);
+            }
+            updated.put(Integer.toString(item.getId()), item);
+        }
+        for (GroceryItem item : _myList) {
+            if (item.getCreatedUserId().equals(user.getId())) {
+                item.setGroupName(groupName);
+            }
+        }
+        databaseGroceries.updateChildren(updated);
+    }
 
     /**
      * add a groceryItem to the app.  checks if the groceryItem is already entered

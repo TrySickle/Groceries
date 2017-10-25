@@ -86,6 +86,10 @@ public class GroceryItem {
         this.price = price;
     }
 
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
     public String getGroupName() {
         return groupName;
     }

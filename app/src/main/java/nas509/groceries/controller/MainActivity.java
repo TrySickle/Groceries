@@ -119,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     model.addUserToGroup(groupName.getText().toString(), model.getLoggedInUser());
                     Log.d("addUser", model.getLoggedInUser().getUsername());
                     model.setUserGroupName(groupName.getText().toString());
+                    model.updateItemsGroupChange(groupName.getText().toString(), model.getLoggedInUser());
                 } else {
                     dialog.cancel();
                 }

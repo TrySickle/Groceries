@@ -78,6 +78,10 @@ public class Model {
         groceryItemManager.removeGroceryItem(id);
     }
 
+    public void updateItemsGroupChange(String groupName, User user) {
+        groceryItemManager.updateItemsGroupChange(groupName, user);
+    }
+
     public void setUserGroupName(String groupName) {
         userManager.setLoggedInUserGroup(groupName);
     }
