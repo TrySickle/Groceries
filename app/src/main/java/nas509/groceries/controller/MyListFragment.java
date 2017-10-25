@@ -176,7 +176,7 @@ public class MyListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
-                    model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString(), model.getLoggedInUser().getId()));
+                    model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString(), model.getLoggedInUser().getId(), model.getLoggedInUser().getGroupName()));
                     //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
                     //model.saveText(file);
                 } else {

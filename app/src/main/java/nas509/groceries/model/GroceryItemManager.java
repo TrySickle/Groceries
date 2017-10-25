@@ -82,16 +82,27 @@ public class GroceryItemManager {
                     String value = (String) grocerySnapshot.child("price").getValue();
                     BigDecimal money = new BigDecimal(value.replaceAll(",", ""));
                     String createdUserId = (String) grocerySnapshot.child("createdUserId").getValue();
+                    String groupName = (String) grocerySnapshot.child("groupName").getValue();
                     long l = (long) grocerySnapshot.child("id").getValue();
                     int id = (int) l;
                     if (id > highestId) {
                         highestId = id;
                     }
-                    GroceryItem newItem = new GroceryItem(name, money, id, createdUserId);
-                    _groceryItems.add(newItem);
-                    if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
-                        _myList.add(newItem);
+                    String loggedInUserGroupName = Model.getInstance().getLoggedInUser().getGroupName();
+                    if (loggedInUserGroupName.equals("")) {
+                        if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                            GroceryItem newItem = new GroceryItem(name, money, id, createdUserId, "");
+                            _groceryItems.add(newItem);
+                            _myList.add(newItem);
+                        }
+                    } else if (loggedInUserGroupName.equals(groupName)){
+                        GroceryItem newItem = new GroceryItem(name, money, id, createdUserId, groupName);
+                        _groceryItems.add(newItem);
+                        if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                            _myList.add(newItem);
+                        }
                     }
+
                 }
                 idSeed = highestId + 1;
                 adapter.notifyDataSetChanged();
@@ -145,7 +156,7 @@ public class GroceryItemManager {
         }
         if (_groceryItems.get(index).getId() == id) {
             GroceryItem old = _groceryItems.get(index);
-            GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id, old.getCreatedUserId());
+            GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id, old.getCreatedUserId(), old.getGroupName());
             _groceryItems.set(index, updated);
             databaseGroceries.child(Integer.toString(updated.getId())).setValue(updated);
             if (_myList.get(indexForMyList).getId() == id) {
