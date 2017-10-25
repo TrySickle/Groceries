@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import nas509.groceries.controller.MyListFragment;
+import nas509.groceries.controller.SharedListFragment;
 
 
 /**
@@ -38,6 +39,10 @@ public class Model {
     }
 
     public void retrieveData(MyListFragment.GroceryItemRecyclerViewAdapter adapter) {
+        groceryItemManager.retrieveData(adapter);
+    }
+
+    public void retrieveData(SharedListFragment.GroceryItemRecyclerViewAdapter adapter) {
         groceryItemManager.retrieveData(adapter);
     }
 

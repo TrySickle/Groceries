@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import nas509.groceries.controller.MyListFragment;
+import nas509.groceries.controller.SharedListFragment;
 
 
 /**
@@ -66,6 +67,54 @@ public class GroceryItemManager {
 
     public DatabaseReference getDatabase() {
         return FirebaseDatabase.getInstance().getReference("groceries");
+    }
+
+    public void retrieveData(final SharedListFragment.GroceryItemRecyclerViewAdapter adapter) {
+        databaseGroceries.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                _groceryItems.clear();
+                _myList.clear();
+
+                int highestId = 0;
+                for (DataSnapshot grocerySnapshot : dataSnapshot.getChildren()) {
+                    //GroceryItem grocery = grocerySnapshot.getValue(GroceryItem.class);
+                    String name = (String) (grocerySnapshot.child("name").getValue());
+                    String value = (String) grocerySnapshot.child("price").getValue();
+                    BigDecimal money = new BigDecimal(value.replaceAll(",", ""));
+                    String createdUserId = (String) grocerySnapshot.child("createdUserId").getValue();
+                    String groupName = (String) grocerySnapshot.child("groupName").getValue();
+                    long l = (long) grocerySnapshot.child("id").getValue();
+                    int id = (int) l;
+                    if (id > highestId) {
+                        highestId = id;
+                    }
+                    String loggedInUserGroupName = Model.getInstance().getLoggedInUser().getGroupName();
+                    if (loggedInUserGroupName.equals("")) {
+                        if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                            GroceryItem newItem = new GroceryItem(name, money, id, createdUserId, "");
+                            _groceryItems.add(newItem);
+                            _myList.add(newItem);
+                        }
+                    } else if (loggedInUserGroupName.equals(groupName)){
+                        GroceryItem newItem = new GroceryItem(name, money, id, createdUserId, groupName);
+                        _groceryItems.add(newItem);
+                        if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                            _myList.add(newItem);
+                        }
+                    }
+
+                }
+                idSeed = highestId + 1;
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void retrieveData(final MyListFragment.GroceryItemRecyclerViewAdapter adapter) {

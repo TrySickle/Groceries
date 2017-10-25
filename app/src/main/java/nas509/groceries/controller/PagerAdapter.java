@@ -25,7 +25,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 MyListFragment tab1 = new MyListFragment();
                 return tab1;
             case 1:
-                Tab2Fragment tab2 = new Tab2Fragment();
+                SharedListFragment tab2 = new SharedListFragment();
                 return tab2;
             case 2:
                 Tab3Fragment tab3 = new Tab3Fragment();
