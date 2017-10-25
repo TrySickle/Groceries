@@ -165,6 +165,53 @@ public class GroceryItemManager {
         });
     }
 
+    public void retrieveData() {
+        databaseGroceries.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                _groceryItems.clear();
+                _myList.clear();
+
+                int highestId = 0;
+                for (DataSnapshot grocerySnapshot : dataSnapshot.getChildren()) {
+                    //GroceryItem grocery = grocerySnapshot.getValue(GroceryItem.class);
+                    String name = (String) (grocerySnapshot.child("name").getValue());
+                    String value = (String) grocerySnapshot.child("price").getValue();
+                    BigDecimal money = new BigDecimal(value.replaceAll(",", ""));
+                    String createdUserId = (String) grocerySnapshot.child("createdUserId").getValue();
+                    String groupName = (String) grocerySnapshot.child("groupName").getValue();
+                    long l = (long) grocerySnapshot.child("id").getValue();
+                    int id = (int) l;
+                    if (id > highestId) {
+                        highestId = id;
+                    }
+                    String loggedInUserGroupName = Model.getInstance().getLoggedInUser().getGroupName();
+                    if (loggedInUserGroupName.equals("")) {
+                        if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                            GroceryItem newItem = new GroceryItem(name, money, id, createdUserId, "");
+                            _groceryItems.add(newItem);
+                            _myList.add(newItem);
+                        }
+                    } else if (loggedInUserGroupName.equals(groupName)){
+                        GroceryItem newItem = new GroceryItem(name, money, id, createdUserId, groupName);
+                        _groceryItems.add(newItem);
+                        if (createdUserId.equals(Model.getInstance().getLoggedInUser().getId())) {
+                            _myList.add(newItem);
+                        }
+                    }
+
+                }
+                idSeed = highestId + 1;
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public int getNewId() {
         return idSeed++;
     }
@@ -191,6 +238,7 @@ public class GroceryItemManager {
             }
         }
         databaseGroceries.updateChildren(updated);
+        retrieveData();
     }
 
     /**
