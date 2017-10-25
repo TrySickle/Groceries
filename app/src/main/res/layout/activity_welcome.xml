@@ -60,21 +60,6 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             />
-        <Button
-            android:id="@+id/skip_button"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@id/app_name_display"
-            android:layout_margin="150dp"
-            android:background="@drawable/button_shape"
-            android:onClick="skipClick"
-            android:text="Skip"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            />
-
     </RelativeLayout>
 
 </FrameLayout>

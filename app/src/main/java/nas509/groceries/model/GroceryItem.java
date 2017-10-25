@@ -3,6 +3,7 @@ package nas509.groceries.model;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 /**
  * Created by jason on 9/16/2017.
@@ -13,31 +14,38 @@ public class GroceryItem {
 
     private BigDecimal price;
     private int id;
+    private String createdUserId;
+    private ArrayList<String> wantedBy;
 
     public GroceryItem() {
-        this("No name", BigDecimal.ZERO, -1);
+        this("No name", BigDecimal.ZERO, -1, "");
     }
 
-    public GroceryItem(String name, BigDecimal price) {
+    public GroceryItem(String name, String price, String createdUserId) {
         this.name = name;
-        this.price = price.setScale(2, RoundingMode.HALF_UP);
+        this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
         this.id = GroceryItemManager.getInstance().getNewId();
+        this.createdUserId = createdUserId;
+        wantedBy = new ArrayList<>();
+        wantedBy.add(createdUserId);
     }
 
-    public GroceryItem(String name, String price) {
-        this(name, new BigDecimal(price));
-    }
-
-    public GroceryItem(String name, String price, String id) {
+    public GroceryItem(String name, String price, String id, String createdUserId) {
         this.name = name;
         this.price = new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP);
         this.id = Integer.valueOf(id);
+        this.createdUserId = createdUserId;
+        wantedBy = new ArrayList<>();
+        wantedBy.add(createdUserId);
     }
 
-    public GroceryItem(String name, BigDecimal price, int id) {
+    public GroceryItem(String name, BigDecimal price, int id, String createdUserId) {
         this.name = name;
         this.price = price.setScale(2, RoundingMode.HALF_UP);
         this.id = id;
+        this.createdUserId = createdUserId;
+        wantedBy = new ArrayList<>();
+        wantedBy.add(createdUserId);
     }
 
     public void saveAsText(PrintWriter writer) {
@@ -70,15 +78,23 @@ public class GroceryItem {
         return price.toPlainString();
     }
 
-    public String getPriceString() {
-        return price.toPlainString();
-    }
-
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
     public String toString() {
         return this.name + price.toPlainString();
+    }
+
+    public String getCreatedUserId() {
+        return createdUserId;
+    }
+
+    public void setCreatedUserId(String createdUserId) {
+        this.createdUserId = createdUserId;
+    }
+
+    public ArrayList<String> getWantedBy() {
+        return wantedBy;
     }
 }

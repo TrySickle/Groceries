@@ -33,17 +33,15 @@ public class UserManager {
     private Map<String, User> _users;
 
     /** The currently logged in user, changes the appActivity text */
-    private User loggedInUser;
     private String loggedInUsername;
 
 
-    DatabaseReference databaseUsers;
+    private DatabaseReference databaseUsers;
 
     /** Private constructor for singleton */
     private UserManager() {
         _usersPasswords = new HashMap<>();
         _users = new HashMap<>();
-        loggedInUser = null;
         loggedInUsername = "";
         databaseUsers = getDatabase();
     }
@@ -83,25 +81,32 @@ public class UserManager {
     }
 
     /** Getter and setter */
+
     public void setLoggedInUser(User user) {
         if (user != null) {
             loggedInUsername = user.getUsername();
-            loggedInUser = _users.get(loggedInUsername);
         } else {
-            loggedInUser = null;
             loggedInUsername = "";
         }
-    }
-
-    public void setLoggedInUserGroup(String groupName) {
-        _users.get(loggedInUsername).setGroupName(groupName);
-        databaseUsers.child(_users.get(loggedInUsername).getId()).setValue(_users.get(loggedInUsername));
     }
 
     public User getLoggedInUser() {
         return _users.get(loggedInUsername);
     }
 
+    public boolean logout() {
+        setLoggedInUser(null);
+        return true;
+    }
+
+    /**
+     * Changes the loggedInUser's groupName field and updates the database
+     * @param groupName     The new groupName of the loggedInUser
+     */
+    public void setLoggedInUserGroup(String groupName) {
+        _users.get(loggedInUsername).setGroupName(groupName);
+        databaseUsers.child(_users.get(loggedInUsername).getId()).setValue(_users.get(loggedInUsername));
+    }
     /**
      * Adds a new user to the system, checks if the username is already
      * registered and does not add if they are
@@ -153,8 +158,5 @@ public class UserManager {
         return password.equals(_usersPasswords.get(username.toLowerCase()));
     }
 
-    public boolean logout() {
-        setLoggedInUser(null);
-        return true;
-    }
+
 }

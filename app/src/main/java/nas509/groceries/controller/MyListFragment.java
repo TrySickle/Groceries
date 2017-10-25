@@ -181,7 +181,7 @@ public class MyListFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 if (name.getText().toString().length() > 0 && price.getText().toString().length() > 0) {
-                    model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString()));
+                    model.addGroceryItem(new GroceryItem(name.getText().toString(), price.getText().toString(), model.getLoggedInUser().getId()));
                     //File file = new File(filesDir, PersistenceManager.DEFAULT_TEXT_FILE_NAME);
                     //model.saveText(file);
                 } else {
@@ -248,7 +248,7 @@ public class MyListFragment extends Fragment {
               textview and the string rep of a course in the other.
              */
             holder.mNameView.setText(mGroceryItems.get(position).getName());
-            holder.mPriceView.setText(mGroceryItems.get(position).getPriceString());
+            holder.mPriceView.setText(mGroceryItems.get(position).getPrice());
             holder.mGroceryItem = mGroceryItems.get(position);
 
             /*

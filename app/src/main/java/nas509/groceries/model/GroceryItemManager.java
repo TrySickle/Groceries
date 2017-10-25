@@ -37,13 +37,13 @@ public class GroceryItemManager {
     private static final GroceryItemManager _instance = new GroceryItemManager();
     public static GroceryItemManager getInstance() { return _instance; }
 
-    /** holds the list of all courses */
+    /** holds the list of all groceryItems */
     private List<GroceryItem> _groceryItems;
 
-    /** the currently selected course, defaults to first course */
+    /** the currently selected groceryItem, defaults to first groceryItem */
     private GroceryItem _currentGroceryItem;
 
-    /** Null Object pattern, returned when no course is found */
+    /** Null Object pattern, returned when no groceryItem is found */
     private final GroceryItem theNullGroceryItem = new GroceryItem();
 
     private int idSeed;
@@ -77,12 +77,13 @@ public class GroceryItemManager {
                     String name = (String) (grocerySnapshot.child("name").getValue());
                     String value = (String) grocerySnapshot.child("price").getValue();
                     BigDecimal money = new BigDecimal(value.replaceAll(",", ""));
+                    String createdUserId = (String) grocerySnapshot.child("createdUserId").getValue();
                     long l = (long) grocerySnapshot.child("id").getValue();
                     int id = (int) l;
                     if (id > highestId) {
                         highestId = id;
                     }
-                    _groceryItems.add(new GroceryItem(name, money, id));
+                    _groceryItems.add(new GroceryItem(name, money, id, createdUserId));
                 }
                 idSeed = highestId + 1;
                 adapter.notifyDataSetChanged();
@@ -100,17 +101,17 @@ public class GroceryItemManager {
     }
 
     /**
-     * get the courses
-     * @return a list of the courses in the app
+     * get the groceryItems
+     * @return a list of the groceryItems in the app
      */
     public List<GroceryItem> getGroceryItems() { return _groceryItems; }
 
     /**
-     * add a course to the app.  checks if the course is already entered
+     * add a groceryItem to the app.  checks if the groceryItem is already entered
      *
-     * uses O(n) linear search for course
+     * uses O(n) linear search for groceryItem
      *
-     * @param groceryItem  the course to be added
+     * @param groceryItem  the groceryItem to be added
      * @return true if added, false if a duplicate
      */
     public boolean addGroceryItem(GroceryItem groceryItem) {
@@ -128,7 +129,8 @@ public class GroceryItemManager {
             index++;
         }
         if (_groceryItems.get(index).getId() == id) {
-            GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id);
+            GroceryItem old = _groceryItems.get(index);
+            GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id, old.getCreatedUserId());
             _groceryItems.set(index, updated);
             databaseGroceries.child(Integer.toString(updated.getId())).setValue(updated);
             return true;
@@ -151,18 +153,18 @@ public class GroceryItemManager {
 
     /**
      *
-     * @return  the currently selected course
+     * @return  the currently selected groceryItem
      */
     public GroceryItem getCurrentGroceryItem() { return _currentGroceryItem;}
 
     public void setCurrentGroceryItem(GroceryItem groceryItem) { _currentGroceryItem = groceryItem; }
 
     /**
-     * Return a course that has the matching id
+     * Return a groceryItem that has the matching id
      * This uses a linear O(n) search
      *
-     * @param id the id number of the course
-     * @return the course with this id or theNullGroceryItem if no such id exists.
+     * @param id the id number of the groceryItem
+     * @return the groceryItem with this id or theNullGroceryItem if no such id exists.
      */
     public GroceryItem getGroceryItemById(int id) {
         for (GroceryItem c : _groceryItems ) {

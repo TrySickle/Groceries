@@ -53,9 +53,6 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
-        UserManager userManager = UserManager.getInstance();
-
-
         // setup register button listener
         Button mRegisterButton = (Button) findViewById(R.id.register_button);
         mRegisterButton.setOnClickListener(new OnClickListener() {
@@ -101,13 +98,12 @@ public class RegisterActivity extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
-        //boolean spinnerValue = ((String) mUserType.getSelectedItem()).equals("User");
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!isPasswordValid(password)) {
+        if (TextUtils.isEmpty(password)) {
             mPasswordView.setError("This field is required");
             focusView = mPasswordView;
             cancel = true;
@@ -130,10 +126,10 @@ public class RegisterActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // depending on spinner value, registers a new User or Admin
-            UserManager userManager = UserManager.getInstance();
             User user = new User(username, password);
-            userManager.addUser(user);
-            userManager.setLoggedInUser(user);
+            Model model = Model.getInstance();
+            model.addUser(user);
+            model.setLoggedInUser(user);
             
 
             // Starts AppActivity and clears the activity stack

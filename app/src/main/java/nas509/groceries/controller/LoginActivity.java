@@ -2,7 +2,6 @@ package nas509.groceries.controller;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -28,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     /** UI references */
     private EditText mUsernameView;
     private EditText mPasswordView;
+    /** singleton model facade */
     Model model;
 
     @Override
@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameView = (EditText) findViewById(R.id.username);
         mPasswordView = (EditText) findViewById(R.id.password);
 
-        // sets up password edit action listener
+        // sets up password edit action listener, doesn't really do anything
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Retrieve database for users and groups
+     */
     @Override
     protected void onStart() {
         super.onStart();
@@ -102,17 +105,21 @@ public class LoginActivity extends AppCompatActivity {
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(username, password)) {
-            mPasswordView.setError("This password is incorrect");
-            focusView = mPasswordView;
+        // Check for an empty username
+        if (TextUtils.isEmpty(username)) {
+            mUsernameView.setError("This field is required");
+            focusView = mUsernameView;
             cancel = true;
         }
 
-        // Check for a valid username address.
-        if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError("This username is taken");
-            focusView = mUsernameView;
+        // Check for an empty password
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError("This field is required");
+            focusView = mPasswordView;
+            cancel = true;
+        } else if (!isPasswordValid(username, password)) {
+            mPasswordView.setError("This password is incorrect");
+            focusView = mPasswordView;
             cancel = true;
         }
 
@@ -122,8 +129,8 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
         } else {
             // Sets the currently logged in user and clears the activity stack
-            UserManager userManager = UserManager.getInstance();
-            userManager.setLoggedInUser(userManager.getUser(username));
+            Model model = Model.getInstance();
+            model.setLoggedInUser(model.getUser(username));
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 

@@ -1,17 +1,5 @@
 package nas509.groceries.model;
 
-import android.util.Log;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.PrintWriter;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -92,6 +80,18 @@ public class Model {
         userManager.setLoggedInUserGroup(groupName);
     }
 
+    public void setLoggedInUser(User user) {
+        userManager.setLoggedInUser(user);
+    }
+
+    public User getUser(String username) {
+        return userManager.getUser(username);
+    }
+
+    public void addUser(User user) {
+        userManager.addUser(user);
+    }
+
     public User getLoggedInUser() {
         return UserManager.getInstance().getLoggedInUser();
     }
@@ -108,7 +108,6 @@ public class Model {
 //        return persistenceManager.saveText(file);
 //    }
 
-    // TODO: separate model into itemManager and itemManagementFacade
 //    public boolean saveText(File file) {
 //        System.out.println("Saving as a text file");
 //        try {
@@ -136,29 +135,6 @@ public class Model {
 //        }
 //
 //        return true;
-//    }
-
-    /**
-     *
-     * @return  the currently selected course
-     */
-    public GroceryItem getCurrentGroceryItem() { return groceryItemManager.getCurrentGroceryItem();}
-
-    public void setCurrentGroceryItem(GroceryItem groceryItem) { groceryItemManager.setCurrentGroceryItem(groceryItem); }
-
-    /**
-     * Return a course that has matching number.
-     * This uses an O(n) linear search.
-     *
-     * @param number the number of the course to find
-     * @return  the course with that number or the NullCourse if no such number exists.
-     *
-     */
-//    public Course getCourseByNumber (String number) {
-//        for (GroceryItem c : _groceryItems ) {
-//            if (c.getNumber().equals(number)) return c;
-//        }
-//        return theNullGroceryItem;
 //    }
 
     /**
