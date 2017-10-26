@@ -56,6 +56,16 @@ public class GroceryItem {
         purchasedBy = new ArrayList<>();
     }
 
+    public GroceryItem(String name, String price, int id, String createdUserId, String groupName, ArrayList<String> wantedBy, ArrayList<String> purchasedBy) {
+        this.name = name;
+        this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
+        this.id = id;
+        this.createdUserId = createdUserId;
+        this.groupName = groupName;
+        this.wantedBy = wantedBy;
+        this.purchasedBy = purchasedBy;
+    }
+
     public int getId() {
         return id;
     }

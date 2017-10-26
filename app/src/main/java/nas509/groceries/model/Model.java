@@ -75,9 +75,19 @@ public class Model {
         return groceryItemManager.addGroceryItem(groceryItem);
     }
 
-//    public void starItem(GroceryItem item) {
-//        item.getWantedBy().add();
-//    }
+    public void starItem(GroceryItem item, boolean favorite) {
+        if (favorite) {
+            if (!item.getWantedBy().contains(getLoggedInUser().getId())) {
+                item.getWantedBy().add(getLoggedInUser().getId());
+                groceryItemManager.updateItem(new GroceryItem(item.getName(), item.getPrice(), item.getId(), item.getCreatedUserId(), item.getGroupName(), item.getWantedBy(), item.getPurchasedBy()));
+            }
+        } else {
+            if (item.getWantedBy().contains(getLoggedInUser().getId())) {
+                item.getWantedBy().remove(getLoggedInUser().getId());
+                groceryItemManager.updateItem(new GroceryItem(item.getName(), item.getPrice(), item.getId(), item.getCreatedUserId(), item.getGroupName(), item.getWantedBy(), item.getPurchasedBy()));
+            }
+        }
+    }
 
     public boolean editGroceryItem(int id, String name, String price) {
         return groceryItemManager.editGroceryItem(id, name, price);

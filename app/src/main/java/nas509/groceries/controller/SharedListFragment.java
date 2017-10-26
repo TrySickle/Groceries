@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
+
 import java.io.File;
 import java.util.List;
 
@@ -233,6 +235,7 @@ public class SharedListFragment extends Fragment {
              */
             holder.mNameView.setText(mGroceryItems.get(position).getName());
             holder.mPriceView.setText(mGroceryItems.get(position).getPrice());
+            holder.favoriteButton.setFavorite(mGroceryItems.get(position).getWantedBy().contains(model.getLoggedInUser().getId()), false);
             holder.mGroceryItem = mGroceryItems.get(position);
 
             /*
@@ -244,6 +247,14 @@ public class SharedListFragment extends Fragment {
                     editGroceryItemDialog(holder.mGroceryItem.getId());
                 }
             });
+
+            holder.favoriteButton.setOnFavoriteAnimationEndListener(
+                    new MaterialFavoriteButton.OnFavoriteAnimationEndListener() {
+                        @Override
+                        public void onAnimationEnd(MaterialFavoriteButton buttonView, boolean favorite) {
+                            starItem(holder.mGroceryItem, holder.favoriteButton.isFavorite());
+                        }
+                    });
         }
 
         @Override
@@ -261,6 +272,7 @@ public class SharedListFragment extends Fragment {
             public final View mView;
             public final TextView mNameView;
             public final TextView mPriceView;
+            public final MaterialFavoriteButton favoriteButton;
             public GroceryItem mGroceryItem;
 
             public ViewHolder(View view) {
@@ -268,6 +280,7 @@ public class SharedListFragment extends Fragment {
                 mView = view;
                 mNameView = (TextView) view.findViewById(R.id.name);
                 mPriceView = (TextView) view.findViewById(R.id.price);
+                favoriteButton = (MaterialFavoriteButton) view.findViewById(R.id.star);
             }
 
             @Override
@@ -277,7 +290,7 @@ public class SharedListFragment extends Fragment {
         }
     }
 
-//    public void starItem(GroceryItem item) {
-//        model.starItem(item);
-//    }
+    public void starItem(GroceryItem item, boolean favorite) {
+        model.starItem(item, favorite);
+    }
 }
