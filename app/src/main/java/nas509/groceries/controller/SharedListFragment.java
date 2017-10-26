@@ -239,6 +239,7 @@ public class SharedListFragment extends Fragment {
             Log.d("bind", position + " " + mGroceryItems.get(position).getId());
             Log.d("bind", Boolean.toString(mGroceryItems.get(position).getWantedBy().contains(model.getLoggedInUser().getId())));
             holder.favoriteButton.setFavorite(mGroceryItems.get(position).containsWantedBy(model.getLoggedInUser()), false);
+            holder.dollarButton.setFavorite(mGroceryItems.get(position).containsPurchasedBy(model.getLoggedInUser()), false);
             holder.mGroceryItem = mGroceryItems.get(position);
 
             /*
@@ -254,8 +255,16 @@ public class SharedListFragment extends Fragment {
             holder.favoriteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    starItem(holder.mGroceryItem.getId(), !holder.favoriteButton.isFavorite());
+                    model.starItem(holder.mGroceryItem.getId(), !holder.favoriteButton.isFavorite());
                     holder.favoriteButton.setFavorite(!holder.favoriteButton.isFavorite());
+                }
+            });
+
+            holder.dollarButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    model.dollarItem(holder.mGroceryItem.getId(), !holder.dollarButton.isFavorite());
+                    holder.dollarButton.setFavorite(!holder.dollarButton.isFavorite());
                 }
             });
         }
@@ -276,6 +285,7 @@ public class SharedListFragment extends Fragment {
             public final TextView mNameView;
             public final TextView mPriceView;
             public final MaterialFavoriteButton favoriteButton;
+            public final MaterialFavoriteButton dollarButton;
             public GroceryItem mGroceryItem;
 
             public ViewHolder(View view) {
@@ -284,6 +294,7 @@ public class SharedListFragment extends Fragment {
                 mNameView = (TextView) view.findViewById(R.id.name);
                 mPriceView = (TextView) view.findViewById(R.id.price);
                 favoriteButton = (MaterialFavoriteButton) view.findViewById(R.id.star);
+                dollarButton = (MaterialFavoriteButton) view.findViewById(R.id.dollar);
             }
 
             @Override
@@ -291,9 +302,5 @@ public class SharedListFragment extends Fragment {
                 return super.toString() + " '" + mPriceView.getText() + "'";
             }
         }
-    }
-
-    public void starItem(int id, boolean favorite) {
-        model.starItem(id, favorite);
     }
 }

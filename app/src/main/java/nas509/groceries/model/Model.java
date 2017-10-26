@@ -75,6 +75,28 @@ public class Model {
         return groceryItemManager.addGroceryItem(groceryItem);
     }
 
+    public void dollarItem(int id, boolean favorite) {
+        for (GroceryItem item : getGroceryItems()) {
+            if (item.getId() == id) {
+                if (favorite) {
+                    item.addPurchasedBy(getLoggedInUser());
+                } else {
+                    item.removePurchasedBy(getLoggedInUser());
+                }
+            }
+        }
+        for (GroceryItem item : getMyList()) {
+            if (item.getId() == id) {
+                if (favorite) {
+                    item.addPurchasedBy(getLoggedInUser());
+                } else {
+                    item.removePurchasedBy(getLoggedInUser());
+                }
+            }
+        }
+        groceryItemManager.updateItem(id);
+    }
+
     public void starItem(int id, boolean favorite) {
         for (GroceryItem item : getGroceryItems()) {
             System.out.println("Before:" + item.getWantedBy().size());

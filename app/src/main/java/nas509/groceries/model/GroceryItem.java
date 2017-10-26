@@ -20,7 +20,7 @@ public class GroceryItem {
     private ArrayList<String> purchasedBy;
 
     public GroceryItem() {
-        this("No name", BigDecimal.ZERO, -1, "", "", null);
+        this("No name", BigDecimal.ZERO, -1, "", "", null, null);
     }
 
     // The new item constructor
@@ -36,14 +36,14 @@ public class GroceryItem {
     }
 
     // existing item constructor
-    public GroceryItem(String name, BigDecimal price, int id, String createdUserId, String groupName, ArrayList<String> wantedBy) {
+    public GroceryItem(String name, BigDecimal price, int id, String createdUserId, String groupName, ArrayList<String> wantedBy, ArrayList<String> purchasedBy) {
         this.name = name;
         this.price = price.setScale(2, RoundingMode.HALF_UP);
         this.id = id;
         this.createdUserId = createdUserId;
         this.groupName = groupName;
         this.wantedBy = wantedBy;
-        purchasedBy = new ArrayList<>();
+        this.purchasedBy = purchasedBy;
     }
 
     public void removeWantedBy(User user) {
@@ -58,6 +58,20 @@ public class GroceryItem {
 
     public boolean containsWantedBy(User user) {
         return wantedBy.contains(user.getId());
+    }
+
+    public void removePurchasedBy(User user) {
+        purchasedBy.remove(user.getId());
+    }
+
+    public void addPurchasedBy(User user) {
+        if (!purchasedBy.contains(user.getId())) {
+            purchasedBy.add(user.getId());
+        }
+    }
+
+    public boolean containsPurchasedBy(User user) {
+        return purchasedBy.contains(user.getId());
     }
 
     public int getId() {

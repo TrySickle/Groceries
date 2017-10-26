@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.github.ivbaranov.mfb.MaterialFavoriteButton;
+
 import java.io.File;
 import java.util.List;
 
@@ -234,6 +236,7 @@ public class MyListFragment extends Fragment {
             holder.mNameView.setText(mGroceryItems.get(position).getName());
             holder.mPriceView.setText(mGroceryItems.get(position).getPrice());
             holder.mGroceryItem = mGroceryItems.get(position);
+            holder.dollarButton.setFavorite(mGroceryItems.get(position).containsPurchasedBy(model.getLoggedInUser()), false);
 
             /*
              * set up a listener to handle if the user clicks on this list item, what should happen?
@@ -242,6 +245,14 @@ public class MyListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     editGroceryItemDialog(holder.mGroceryItem.getId());
+                }
+            });
+
+            holder.dollarButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    model.dollarItem(holder.mGroceryItem.getId(), !holder.dollarButton.isFavorite());
+                    holder.dollarButton.setFavorite(!holder.dollarButton.isFavorite());
                 }
             });
         }
@@ -262,12 +273,14 @@ public class MyListFragment extends Fragment {
             public final TextView mNameView;
             public final TextView mPriceView;
             public GroceryItem mGroceryItem;
+            public final MaterialFavoriteButton dollarButton;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mNameView = (TextView) view.findViewById(R.id.name);
                 mPriceView = (TextView) view.findViewById(R.id.price);
+                dollarButton = (MaterialFavoriteButton) view.findViewById(R.id.dollar);
             }
 
             @Override
