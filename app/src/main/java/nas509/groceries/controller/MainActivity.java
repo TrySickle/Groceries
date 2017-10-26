@@ -18,8 +18,6 @@ import android.view.View;
 import android.widget.EditText;
 
 import nas509.groceries.R;
-import nas509.groceries.model.GroceryItem;
-import nas509.groceries.model.GroupManager;
 import nas509.groceries.model.Model;
 import nas509.groceries.model.UserManager;
 
