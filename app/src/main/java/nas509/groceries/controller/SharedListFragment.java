@@ -7,14 +7,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -22,7 +17,6 @@ import android.widget.TextView;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
-import java.io.File;
 import java.util.List;
 
 import nas509.groceries.R;
@@ -34,7 +28,6 @@ public class SharedListFragment extends Fragment {
     SharedListFragment.GroceryItemRecyclerViewAdapter adapter;
     View recyclerView;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    File filesDir;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

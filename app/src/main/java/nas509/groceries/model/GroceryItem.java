@@ -1,6 +1,5 @@
 package nas509.groceries.model;
 
-import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
