@@ -35,10 +35,6 @@ public class PaymentsManager {
                 userOrderingReverse.put(order++, entry.getValue());
             }
         }
-        System.out.println(userOrdering.size());
-        System.out.println(userOrderingReverse.size());
-        System.out.println(users.size());
-        System.out.println(items.size());
     }
 
     // need methods to link userOrdering to prices in youOwe and owesYou, getters

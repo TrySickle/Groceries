@@ -69,7 +69,7 @@ public class PaymentsFragment extends Fragment {
         // Update the adapter and notify data set changed
         // ...
 
-        adapter.notifyDataSetChanged();
+        ((RecyclerView) recyclerView).setAdapter(adapter);
         // Stop refresh animation
         mSwipeRefreshLayout.setRefreshing(false);
     }
