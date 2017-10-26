@@ -69,7 +69,7 @@ public class GroceryItemManager {
         return FirebaseDatabase.getInstance().getReference("groceries");
     }
 
-    public void retrieveData(final SharedListFragment.GroceryItemRecyclerViewAdapter adapter) {
+    public void retrieveData(final SharedListFragment.GroceryItemRecyclerViewAdapter adapter, final boolean detach) {
         databaseGroceries.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,6 +108,9 @@ public class GroceryItemManager {
                 }
                 idSeed = highestId + 1;
                 adapter.notifyDataSetChanged();
+                if (detach) {
+                    databaseGroceries.removeEventListener(this);
+                }
             }
 
             @Override
@@ -117,7 +120,7 @@ public class GroceryItemManager {
         });
     }
 
-    public void retrieveData(final MyListFragment.GroceryItemRecyclerViewAdapter adapter) {
+    public void retrieveData(final MyListFragment.GroceryItemRecyclerViewAdapter adapter, final boolean detach) {
         databaseGroceries.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -156,6 +159,9 @@ public class GroceryItemManager {
                 }
                 idSeed = highestId + 1;
                 adapter.notifyDataSetChanged();
+                if (detach) {
+                    databaseGroceries.removeEventListener(this);
+                }
             }
 
             @Override
@@ -203,6 +209,7 @@ public class GroceryItemManager {
 
                 }
                 idSeed = highestId + 1;
+                databaseGroceries.removeEventListener(this);
             }
 
             @Override
@@ -268,12 +275,12 @@ public class GroceryItemManager {
         while (indexForMyList < _myList.size() && _myList.get(indexForMyList).getId() != id) {
             indexForMyList++;
         }
-        if (_groceryItems.get(index).getId() == id) {
+        if (_groceryItems.size() > 0 && _groceryItems.get(index).getId() == id) {
             GroceryItem old = _groceryItems.get(index);
             GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id, old.getCreatedUserId(), old.getGroupName());
             _groceryItems.set(index, updated);
             databaseGroceries.child(Integer.toString(updated.getId())).setValue(updated);
-            if (_myList.get(indexForMyList).getId() == id) {
+            if (!_myList.isEmpty() && _myList.get(indexForMyList).getId() == id) {
                 _myList.set(indexForMyList, updated);
                 return true;
             }

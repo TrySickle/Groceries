@@ -73,7 +73,7 @@ public class SharedListFragment extends Fragment {
         // ...
 
         // Load
-        model.retrieveData(adapter);
+        model.retrieveData(adapter, true);
         onItemsLoadComplete();
     }
 
@@ -94,7 +94,7 @@ public class SharedListFragment extends Fragment {
 
         //Step 2.  Hook up the adapter to the view
         setupRecyclerView((RecyclerView) recyclerView);
-        model.retrieveData(adapter);
+        model.retrieveData(adapter, false);
 //        final Handler handler = new Handler();
 //        handler.postDelayed(new Runnable() {
 //            @Override
@@ -126,7 +126,9 @@ public class SharedListFragment extends Fragment {
         LayoutInflater inflater = this.getLayoutInflater();
         View viewInflated = inflater.inflate(R.layout.dialog_add_item, null);
         final EditText name = (EditText) viewInflated.findViewById(R.id.name);
+        name.setText(groceryItem.getName());
         final EditText price = (EditText) viewInflated.findViewById(R.id.price);
+        price.setText(groceryItem.getPrice());
         builder.setView(viewInflated);
 
         // Set up the buttons

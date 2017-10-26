@@ -38,12 +38,12 @@ public class Model {
         groceryItemManager.getDatabase();
     }
 
-    public void retrieveData(MyListFragment.GroceryItemRecyclerViewAdapter adapter) {
-        groceryItemManager.retrieveData(adapter);
+    public void retrieveData(MyListFragment.GroceryItemRecyclerViewAdapter adapter, final boolean detach) {
+        groceryItemManager.retrieveData(adapter, detach);
     }
 
-    public void retrieveData(SharedListFragment.GroceryItemRecyclerViewAdapter adapter) {
-        groceryItemManager.retrieveData(adapter);
+    public void retrieveData(SharedListFragment.GroceryItemRecyclerViewAdapter adapter, final boolean detach) {
+        groceryItemManager.retrieveData(adapter, detach);
     }
 
     public void retrieveUsers() {
