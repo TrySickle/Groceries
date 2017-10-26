@@ -75,18 +75,30 @@ public class Model {
         return groceryItemManager.addGroceryItem(groceryItem);
     }
 
-    public void starItem(GroceryItem item, boolean favorite) {
-        if (favorite) {
-            if (!item.getWantedBy().contains(getLoggedInUser().getId())) {
-                item.getWantedBy().add(getLoggedInUser().getId());
-                groceryItemManager.updateItem(new GroceryItem(item.getName(), item.getPrice(), item.getId(), item.getCreatedUserId(), item.getGroupName(), item.getWantedBy(), item.getPurchasedBy()));
+    public void starItem(int id, boolean favorite) {
+        for (GroceryItem item : getGroceryItems()) {
+            System.out.println("Before:" + item.getWantedBy().size());
+            if (item.getId() == id) {
+                if (favorite) {
+                    item.addWantedBy(getLoggedInUser());
+                } else {
+                    item.removeWantedBy(getLoggedInUser());
+                }
             }
-        } else {
-            if (item.getWantedBy().contains(getLoggedInUser().getId())) {
-                item.getWantedBy().remove(getLoggedInUser().getId());
-                groceryItemManager.updateItem(new GroceryItem(item.getName(), item.getPrice(), item.getId(), item.getCreatedUserId(), item.getGroupName(), item.getWantedBy(), item.getPurchasedBy()));
-            }
+            System.out.println("After:" + item.getWantedBy().size());
         }
+        for (GroceryItem item : getMyList()) {
+            System.out.println("Before:" + item.getWantedBy().size());
+            if (item.getId() == id) {
+                if (favorite) {
+                    item.addWantedBy(getLoggedInUser());
+                } else {
+                    item.removeWantedBy(getLoggedInUser());
+                }
+            }
+            System.out.println("After:" + item.getWantedBy().size());
+        }
+        groceryItemManager.updateItem(id);
     }
 
     public boolean editGroceryItem(int id, String name, String price) {

@@ -20,7 +20,7 @@ public class GroceryItem {
     private ArrayList<String> purchasedBy;
 
     public GroceryItem() {
-        this("No name", BigDecimal.ZERO, -1, "", "");
+        this("No name", BigDecimal.ZERO, -1, "", "", null);
     }
 
     public GroceryItem(String name, String price, String createdUserId, String groupName) {
@@ -40,30 +40,32 @@ public class GroceryItem {
         this.id = Integer.valueOf(id);
         this.createdUserId = createdUserId;
         this.groupName = groupName;
-        wantedBy = new ArrayList<>();
-        wantedBy.add(createdUserId);
+
         purchasedBy = new ArrayList<>();
     }
 
-    public GroceryItem(String name, BigDecimal price, int id, String createdUserId, String groupName) {
+    public GroceryItem(String name, BigDecimal price, int id, String createdUserId, String groupName, ArrayList<String> wantedBy) {
         this.name = name;
         this.price = price.setScale(2, RoundingMode.HALF_UP);
         this.id = id;
         this.createdUserId = createdUserId;
         this.groupName = groupName;
-        wantedBy = new ArrayList<>();
-        wantedBy.add(createdUserId);
+        this.wantedBy = wantedBy;
         purchasedBy = new ArrayList<>();
     }
 
-    public GroceryItem(String name, String price, int id, String createdUserId, String groupName, ArrayList<String> wantedBy, ArrayList<String> purchasedBy) {
-        this.name = name;
-        this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
-        this.id = id;
-        this.createdUserId = createdUserId;
-        this.groupName = groupName;
-        this.wantedBy = wantedBy;
-        this.purchasedBy = purchasedBy;
+    public void removeWantedBy(User user) {
+        wantedBy.remove(user.getId());
+    }
+
+    public void addWantedBy(User user) {
+        if (!wantedBy.contains(user.getId())) {
+            wantedBy.add(user.getId());
+        }
+    }
+
+    public boolean containsWantedBy(User user) {
+        return wantedBy.contains(user.getId());
     }
 
     public int getId() {
