@@ -50,7 +50,7 @@ public class MyListFragment extends Fragment {
                 addGroceryItemDialog();
             }
         });
-        recyclerView = view.findViewById(R.id.recycler_list);
+        recyclerView = view.findViewById(R.id.recycler_list_my_list);
         assert recyclerView != null;
 
         // filesDir = this.getFilesDir();
@@ -227,7 +227,7 @@ public class MyListFragment extends Fragment {
               If you look at the example file, you will see it currently just 2 TextView elements
              */
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.list_content, parent, false);
+                    .inflate(R.layout.list_content_my_list, parent, false);
             return new MyListFragment.GroceryItemRecyclerViewAdapter.ViewHolder(view);
         }
 

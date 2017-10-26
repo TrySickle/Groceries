@@ -8,13 +8,13 @@
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_list"
+        android:id="@+id/recycler_list_shared_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context="nas509.groceries.controller.MyListFragment"
-        tools:listitem="@layout/list_content"
+        tools:context="nas509.groceries.controller.SharedListFragment"
+        tools:listitem="@layout/list_content_shared_list"
         android:theme="@style/AppTheme"/>
 </android.support.v4.widget.SwipeRefreshLayout>
