@@ -28,7 +28,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 SharedListFragment tab2 = new SharedListFragment();
                 return tab2;
             case 2:
-                Tab3Fragment tab3 = new Tab3Fragment();
+                PaymentsFragment tab3 = new PaymentsFragment();
                 return tab3;
             default:
                 return null;
