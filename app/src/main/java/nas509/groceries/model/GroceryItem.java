@@ -23,6 +23,7 @@ public class GroceryItem {
         this("No name", BigDecimal.ZERO, -1, "", "", null);
     }
 
+    // The new item constructor
     public GroceryItem(String name, String price, String createdUserId, String groupName) {
         this.name = name;
         this.price = new BigDecimal(price).setScale(2, RoundingMode.HALF_UP);
@@ -34,16 +35,7 @@ public class GroceryItem {
         purchasedBy = new ArrayList<>();
     }
 
-    public GroceryItem(String name, String price, String id, String createdUserId, String groupName) {
-        this.name = name;
-        this.price = new BigDecimal(price).setScale(2, BigDecimal.ROUND_HALF_UP);
-        this.id = Integer.valueOf(id);
-        this.createdUserId = createdUserId;
-        this.groupName = groupName;
-
-        purchasedBy = new ArrayList<>();
-    }
-
+    // existing item constructor
     public GroceryItem(String name, BigDecimal price, int id, String createdUserId, String groupName, ArrayList<String> wantedBy) {
         this.name = name;
         this.price = price.setScale(2, RoundingMode.HALF_UP);
