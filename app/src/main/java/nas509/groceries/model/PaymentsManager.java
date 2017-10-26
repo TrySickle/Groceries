@@ -11,33 +11,41 @@ import java.util.Map;
  */
 
 public class PaymentsManager {
-    private HashMap<String, Integer> userOrdering;
+    private HashMap<User, Integer> userOrdering;
+    private HashMap<Integer, User> userOrderingReverse;
     private ArrayList<BigDecimal> youOwe;
     private ArrayList<BigDecimal> owesYou;
-    private int order;
     private GroceryItemManager groceryItemManager = GroceryItemManager.getInstance();
     private UserManager userManager = UserManager.getInstance();
-    private HashMap<String, User> users = (HashMap<String, User>) userManager.getUsers();
-    private ArrayList<GroceryItem> items = (ArrayList<GroceryItem>) groceryItemManager.getGroceryItems();
+    private HashMap<String, User> users;
+    private ArrayList<GroceryItem> items;
     User loggedInUser = userManager.getLoggedInUser();
 
     public PaymentsManager() {
         youOwe = new ArrayList<>();
         owesYou = new ArrayList<>();
         userOrdering = new HashMap<>();
-        order = 0;
+        userOrderingReverse = new HashMap<>();
+        users = (HashMap<String, User>) userManager.getUsers();
+        items = (ArrayList<GroceryItem>) groceryItemManager.getGroceryItems();
+        int order = 0;
         for (Map.Entry<String, User> entry : users.entrySet()) {
-            if (!entry.getValue().getId().equals(loggedInUser.getId())) {
-                userOrdering.put(entry.getValue().getId(), order++);
+            if (!entry.getValue().getId().equals(loggedInUser.getId()) && entry.getValue().getGroupName().equals(loggedInUser.getGroupName())) {
+                userOrdering.put(entry.getValue(), order);
+                userOrderingReverse.put(order++, entry.getValue());
             }
         }
+        System.out.println(userOrdering.size());
+        System.out.println(userOrderingReverse.size());
+        System.out.println(users.size());
+        System.out.println(items.size());
     }
 
     // need methods to link userOrdering to prices in youOwe and owesYou, getters
-    public String calculatePayments() {
+    public void calculatePayments() {
         for (GroceryItem g : items) {
             // item is in your group and has been purchased by someone
-            if (g.getGroupName().equals(loggedInUser.getGroupName()) && !g.getPurchasedBy().isEmpty()) {
+            if (g.getGroupName().equals(loggedInUser.getGroupName()) && !g.getPurchasedBy().isEmpty() && !g.getWantedBy().isEmpty()) {
                 // total price = price of item * size of purchasedBy
                 BigDecimal total = new BigDecimal(g.getPrice()).multiply(new BigDecimal(g.getPurchasedBy().size()));
                 total = total.setScale(2, RoundingMode.HALF_UP);
@@ -45,25 +53,68 @@ public class PaymentsManager {
                 if (g.containsPurchasedBy(loggedInUser)) {
                     for (String s : g.getWantedBy()) {
                         if (!s.equals(loggedInUser.getId())) {
-                            BigDecimal old = owesYou.get(userOrdering.get(s));
+                            BigDecimal old = null;
+                            if (userOrdering.get(userManager.getUserById(s)) < owesYou.size()) {
+                                old = owesYou.get(userOrdering.get(userManager.getUserById(s)));
+                            }
                             BigDecimal newPrice = individualPrice;
                             if (old != null) {
                                 newPrice = old.add(newPrice);
                             }
-                            owesYou.set(userOrdering.get(s), newPrice);
+                            if (userOrdering.get(userManager.getUserById(s)) < owesYou.size()) {
+                                owesYou.set(userOrdering.get(userManager.getUserById(s)), newPrice);
+                            } else {
+                                owesYou.add(userOrdering.get(userManager.getUserById(s)), newPrice);
+                            }
+
                         }
                     }
                 } else if (g.containsWantedBy(loggedInUser)) {
                     for (String s : g.getPurchasedBy()) {
-                        BigDecimal old = youOwe.get(userOrdering.get(s));
+                        BigDecimal old = null;
+                        if (userOrdering.get(userManager.getUserById(s)) < youOwe.size()) {
+                            old = youOwe.get(userOrdering.get(userManager.getUserById(s)));
+                        }
                         BigDecimal newPrice = individualPrice;
                         if (old != null) {
                             newPrice = old.add(newPrice);
                         }
-                        youOwe.set(userOrdering.get(s), newPrice);
+                        if (userOrdering.get(userManager.getUserById(s)) < youOwe.size()) {
+                            youOwe.set(userOrdering.get(userManager.getUserById(s)), newPrice);
+                        } else {
+                            youOwe.add(userOrdering.get(userManager.getUserById(s)), newPrice);
+                        }
+
                     }
                 }
             }
         }
+    }
+
+    public ArrayList<String> getYouOweList() {
+        ArrayList<String> youOweList = new ArrayList<>();
+        for (int i = 0; i < youOwe.size(); i++) {
+            if (youOwe.get(i) != null) {
+                youOweList.add("You owe " + userOrderingReverse.get(i).getUsername() + " $" + youOwe.get(i).toPlainString());
+            }
+        }
+        return youOweList;
+    }
+
+    public ArrayList<String> getOwesYouList() {
+        ArrayList<String> owesYouList = new ArrayList<>();
+        for (int i = 0; i < owesYou.size(); i++) {
+            if (owesYou.get(i) != null) {
+                owesYouList.add(userOrderingReverse.get(i).getUsername() + " owes you $" + owesYou.get(i).toPlainString());
+            }
+        }
+        return owesYouList;
+    }
+
+    public ArrayList<String> getPaymentsList() {
+        calculatePayments();
+        ArrayList<String> displayList = getOwesYouList();
+        displayList.addAll(getYouOweList());
+        return displayList;
     }
 }

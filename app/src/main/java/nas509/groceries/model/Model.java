@@ -1,9 +1,11 @@
 package nas509.groceries.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 import nas509.groceries.controller.MyListFragment;
+import nas509.groceries.controller.PaymentsFragment;
 import nas509.groceries.controller.SharedListFragment;
 
 
@@ -159,42 +161,10 @@ public class Model {
         groupManager.addUserToGroup(groupName, u);
     }
 
-//    public boolean loadText(File file) {
-//        return persistenceManager.loadText(file);
-//    }
-
-//    public boolean saveText(File file) {
-//        return persistenceManager.saveText(file);
-//    }
-
-//    public boolean saveText(File file) {
-//        System.out.println("Saving as a text file");
-//        try {
-//            PrintWriter pw = new PrintWriter(file);
-//            sm.saveAsText(pw);
-//            pw.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            Log.d("UserManagerFacade", "Error opening the text file for save!");
-//            return false;
-//        }
-//
-//        return true;
-//    }
-//
-//    public boolean loadText(File file) {
-//        try {
-//            //make an input object for reading
-//            BufferedReader reader = new BufferedReader(new FileReader(file));
-//            sm.loadFromText(reader);
-//
-//        } catch (FileNotFoundException e) {
-//            Log.e("ModelSingleton", "Failed to open text file for loading!");
-//            return false;
-//        }
-//
-//        return true;
-//    }
+    public ArrayList<String> getPaymentsList() {
+        PaymentsManager paymentsManager = new PaymentsManager();
+        return paymentsManager.getPaymentsList();
+    }
 
     /**
      * Return a course that has the matching id

@@ -78,6 +78,15 @@ public class UserManager {
         return databaseUsers.push().getKey();
     }
 
+    public User getUserById(String id) {
+        for (Map.Entry<String, User> entry : _users.entrySet()) {
+            if (entry.getValue().getId().equals(id)) {
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
     /** Getter and setter */
 
     public void setLoggedInUser(User user) {
