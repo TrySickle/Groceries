@@ -75,6 +75,10 @@ public class Model {
         return groceryItemManager.addGroceryItem(groceryItem);
     }
 
+//    public void starItem(GroceryItem item) {
+//        item.getWantedBy().add();
+//    }
+
     public boolean editGroceryItem(int id, String name, String price) {
         return groceryItemManager.editGroceryItem(id, name, price);
     }

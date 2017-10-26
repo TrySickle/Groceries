@@ -17,6 +17,7 @@ public class GroceryItem {
     private String createdUserId;
     private String groupName;
     private ArrayList<String> wantedBy;
+    private ArrayList<String> purchasedBy;
 
     public GroceryItem() {
         this("No name", BigDecimal.ZERO, -1, "", "");
@@ -30,6 +31,7 @@ public class GroceryItem {
         this.groupName = groupName;
         wantedBy = new ArrayList<>();
         wantedBy.add(createdUserId);
+        purchasedBy = new ArrayList<>();
     }
 
     public GroceryItem(String name, String price, String id, String createdUserId, String groupName) {
@@ -40,6 +42,7 @@ public class GroceryItem {
         this.groupName = groupName;
         wantedBy = new ArrayList<>();
         wantedBy.add(createdUserId);
+        purchasedBy = new ArrayList<>();
     }
 
     public GroceryItem(String name, BigDecimal price, int id, String createdUserId, String groupName) {
@@ -50,21 +53,8 @@ public class GroceryItem {
         this.groupName = groupName;
         wantedBy = new ArrayList<>();
         wantedBy.add(createdUserId);
+        purchasedBy = new ArrayList<>();
     }
-
-//    public void saveAsText(PrintWriter writer) {
-//        System.out.println("GroceryItem saving grocery item: " + name);
-//        writer.println(name + "\t" + price + "\t" + id);
-//    }
-
-//    public static GroceryItem parseEntry(String line) {
-//        assert line != null;
-//        String[] tokens = line.split("\t");
-//        assert tokens.length == 3;
-//        GroceryItem g = new GroceryItem(tokens[0], tokens[1], tokens[2]);
-//
-//        return g;
-//    }
 
     public int getId() {
         return id;
@@ -105,6 +95,8 @@ public class GroceryItem {
     public void setCreatedUserId(String createdUserId) {
         this.createdUserId = createdUserId;
     }
+
+    public ArrayList<String> getPurchasedBy() { return purchasedBy; }
 
     public ArrayList<String> getWantedBy() {
         return wantedBy;
