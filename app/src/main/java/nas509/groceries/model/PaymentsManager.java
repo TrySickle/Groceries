@@ -46,14 +46,17 @@ public class PaymentsManager {
                 BigDecimal total = new BigDecimal(g.getPrice()).multiply(new BigDecimal(g.getPurchasedBy().size()));
                 total = total.setScale(2, RoundingMode.HALF_UP);
                 BigDecimal individualPrice = total.divide(new BigDecimal(g.getWantedBy().size()), 2, RoundingMode.HALF_UP);
+                // if loggedInUser bought item g
                 if (g.containsPurchasedBy(loggedInUser)) {
+                    // for each person that wanted g
                     for (String s : g.getWantedBy()) {
-                        if (!s.equals(loggedInUser.getId())) {
+                        // if that person is not the loggedInUser or the person didn't also buy item g
+                        if (!s.equals(loggedInUser.getId()) || !g.containsPurchasedBy(userManager.getUserById(s))) {
                             BigDecimal old = null;
                             if (userOrdering.get(userManager.getUserById(s)) < owesYou.size()) {
                                 old = owesYou.get(userOrdering.get(userManager.getUserById(s)));
                             }
-                            BigDecimal newPrice = individualPrice;
+                            BigDecimal newPrice = individualPrice.divide(new BigDecimal(g.getPurchasedBy().size()), 2, RoundingMode.HALF_UP);
                             if (old != null) {
                                 newPrice = old.add(newPrice);
                             }
@@ -62,7 +65,25 @@ public class PaymentsManager {
                             } else {
                                 owesYou.add(userOrdering.get(userManager.getUserById(s)), newPrice);
                             }
-
+                        }
+                    }
+                    for (String s : g.getPurchasedBy()) {
+                        BigDecimal old = null;
+                        if (!g.containsWantedBy(userManager.getUserById(s))){
+                            if (g.containsWantedBy(loggedInUser)) {
+                                if (userOrdering.get(userManager.getUserById(s)) < youOwe.size()) {
+                                    old = youOwe.get(userOrdering.get(userManager.getUserById(s)));
+                                }
+                                BigDecimal newPrice = individualPrice.divide(new BigDecimal(g.getPurchasedBy().size()), 2, RoundingMode.HALF_UP);;
+                                if (old != null) {
+                                    newPrice = old.add(newPrice);
+                                }
+                                if (userOrdering.get(userManager.getUserById(s)) < youOwe.size()) {
+                                    youOwe.set(userOrdering.get(userManager.getUserById(s)), newPrice);
+                                } else {
+                                    youOwe.add(userOrdering.get(userManager.getUserById(s)), newPrice);
+                                }
+                            }
                         }
                     }
                 } else if (g.containsWantedBy(loggedInUser)) {
