@@ -60,9 +60,11 @@ public class PaymentsFragment extends Fragment {
     }
 
     public static void refreshPayments() {
-        adapter = new PaymentsFragment.GroceryItemRecyclerViewAdapter(model.getPaymentsList());
-        System.out.println(adapter.getItemCount());
-        onItemsLoadComplete();
+        if (model != null) {
+            adapter = new PaymentsFragment.GroceryItemRecyclerViewAdapter(model.getPaymentsList());
+            System.out.println(adapter.getItemCount());
+            onItemsLoadComplete();
+        }
     }
 
     static void onItemsLoadComplete() {
