@@ -30,10 +30,10 @@ import nas509.groceries.model.Model;
 import nas509.groceries.model.PaymentsManager;
 
 public class PaymentsFragment extends Fragment {
-    Model model;
-    PaymentsFragment.GroceryItemRecyclerViewAdapter adapter;
-    View recyclerView;
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    static Model model;
+    static PaymentsFragment.GroceryItemRecyclerViewAdapter adapter;
+    static View recyclerView;
+    static SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,13 +59,13 @@ public class PaymentsFragment extends Fragment {
         return view;
     }
 
-    public void refreshPayments() {
+    public static void refreshPayments() {
         adapter = new PaymentsFragment.GroceryItemRecyclerViewAdapter(model.getPaymentsList());
         System.out.println(adapter.getItemCount());
         onItemsLoadComplete();
     }
 
-    void onItemsLoadComplete() {
+    static void onItemsLoadComplete() {
         // Update the adapter and notify data set changed
         // ...
 
@@ -92,7 +92,7 @@ public class PaymentsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public class GroceryItemRecyclerViewAdapter
+    public static class GroceryItemRecyclerViewAdapter
             extends RecyclerView.Adapter<PaymentsFragment.GroceryItemRecyclerViewAdapter.ViewHolder> {
 
         /**

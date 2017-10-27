@@ -74,7 +74,9 @@ public class Model {
      * @return true if added, false if a duplicate
      */
     public boolean addGroceryItem(GroceryItem groceryItem) {
-        return groceryItemManager.addGroceryItem(groceryItem);
+        boolean returnThis = groceryItemManager.addGroceryItem(groceryItem);
+        PaymentsFragment.refreshPayments();
+        return returnThis;
     }
 
     public void dollarItem(int id, boolean favorite) {
@@ -97,6 +99,7 @@ public class Model {
             }
         }
         groceryItemManager.updateItem(id);
+        PaymentsFragment.refreshPayments();
     }
 
     public void starItem(int id, boolean favorite) {
@@ -123,22 +126,28 @@ public class Model {
             System.out.println("After:" + item.getWantedBy().size());
         }
         groceryItemManager.updateItem(id);
+        PaymentsFragment.refreshPayments();
     }
 
     public boolean editGroceryItem(int id, String name, String price) {
-        return groceryItemManager.editGroceryItem(id, name, price);
+        boolean returnThis = groceryItemManager.editGroceryItem(id, name, price);
+        PaymentsFragment.refreshPayments();
+        return returnThis;
     }
 
     public void removeGroceryItem(int id) {
         groceryItemManager.removeGroceryItem(id);
+        PaymentsFragment.refreshPayments();
     }
 
     public void updateItemsGroupChange(String groupName, User user) {
         groceryItemManager.updateItemsGroupChange(groupName, user);
+        PaymentsFragment.refreshPayments();
     }
 
     public void setUserGroupName(String groupName) {
         userManager.setLoggedInUserGroup(groupName);
+        PaymentsFragment.refreshPayments();
     }
 
     public void setLoggedInUser(User user) {
@@ -159,6 +168,7 @@ public class Model {
 
     public void addUserToGroup(String groupName, User u) {
         groupManager.addUserToGroup(groupName, u);
+        PaymentsFragment.refreshPayments();
     }
 
     public ArrayList<String> getPaymentsList() {
