@@ -262,7 +262,6 @@ public class GroceryItemManager {
             }
         }
         databaseGroceries.updateChildren(updated);
-        retrieveData();
     }
 
     /**
@@ -277,8 +276,6 @@ public class GroceryItemManager {
         for (GroceryItem g : _groceryItems ) {
             if (g.equals(groceryItem)) return false;
         }
-        _groceryItems.add(groceryItem);
-        _myList.add(groceryItem);
         databaseGroceries.child(Integer.toString(groceryItem.getId())).setValue(groceryItem);
         return true;
     }
@@ -296,19 +293,10 @@ public class GroceryItemManager {
         while (index < _groceryItems.size() && _groceryItems.get(index).getId() != id) {
             index++;
         }
-        int indexForMyList = 0;
-        while (indexForMyList < _myList.size() && _myList.get(indexForMyList).getId() != id) {
-            indexForMyList++;
-        }
         if (_groceryItems.size() > 0 && _groceryItems.get(index).getId() == id) {
             GroceryItem old = _groceryItems.get(index);
             GroceryItem updated = new GroceryItem(name, new BigDecimal(price).setScale(2, RoundingMode.HALF_UP), id, old.getCreatedUserId(), old.getGroupName(), old.getWantedBy(), old.getPurchasedBy());
-            _groceryItems.set(index, updated);
             databaseGroceries.child(Integer.toString(updated.getId())).setValue(updated);
-            if (indexForMyList < _myList.size() && _myList.get(indexForMyList).getId() == id) {
-                _myList.set(indexForMyList, updated);
-                return true;
-            }
             return true;
         }
 
@@ -326,10 +314,6 @@ public class GroceryItemManager {
         }
         if (_groceryItems.get(index).getId() == id) {
             databaseGroceries.child(Integer.toString(_groceryItems.get(index).getId())).removeValue();
-            _groceryItems.remove(index);
-            if (_myList.get(indexForMyList).getId() == id) {
-                _myList.remove(indexForMyList);
-            }
         }
     }
 

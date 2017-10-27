@@ -22,18 +22,26 @@ public class PaymentsManager {
     User loggedInUser = userManager.getLoggedInUser();
 
     public PaymentsManager() {
-        youOwe = new ArrayList<>();
-        owesYou = new ArrayList<>();
         userOrdering = new HashMap<>();
         userOrderingReverse = new HashMap<>();
         users = (HashMap<String, User>) userManager.getUsers();
         items = (ArrayList<GroceryItem>) groceryItemManager.getGroceryItems();
+        youOwe = new ArrayList<>(items.size());
+        owesYou = new ArrayList<>(items.size());
+        initializeArrayList(youOwe, items.size());
+        initializeArrayList(owesYou, items.size());
         int order = 0;
         for (Map.Entry<String, User> entry : users.entrySet()) {
             if (!entry.getValue().getId().equals(loggedInUser.getId()) && entry.getValue().getGroupName().equals(loggedInUser.getGroupName())) {
                 userOrdering.put(entry.getValue(), order);
                 userOrderingReverse.put(order++, entry.getValue());
             }
+        }
+    }
+
+    public void initializeArrayList(ArrayList<BigDecimal> arrayList, int size) {
+        for (int i = 0; i < size; i++) {
+            arrayList.add(null);
         }
     }
 
